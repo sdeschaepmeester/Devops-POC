@@ -2,7 +2,7 @@
 
 ## Introduction 
 
-Ce répertoire contient les artefacts et le code source pour le projet 10 Openclassroom de la formation d'Architecte Logiciel. 
+Ce répertoire contient le code source pour le projet 10 Openclassroom de la formation d'Architecte Logiciel. 
 
 **Étudiante : Samantha Deschaepmeester**
 
@@ -17,15 +17,7 @@ La plateforme a les objectifs suivants :
 
 ## Emplacement des fichiers 
 
-Le projet est séparé en deux répertoires : 
-- `architecture` : Ce dossier contient tous les artefacts concernant l'architecture à suivre suivants :
-
-| Nom du document | Description |
-| - | - |
-| **Reporting** | Permet de prouver la conformité du travail, en incluant une justification des technologies, les normes et principes et les résultats du PoC |
-| **xx** | xx |
-
-- `medhead` : Ce dossier contient le code source du PoC. Il contient les sous dossiers suivants : 
+Le projet est séparé en plusieurs sections : 
 
 | Nom du dossier | Description |
 | - | - |
