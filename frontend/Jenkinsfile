@@ -15,30 +15,36 @@ pipeline {
             }
         }
         stage('Install Dependencies') {
-            steps {
+            dir('frontend') {
                 sh 'npm install'
             }
         }
         stage('Build') {
             steps {
-                sh 'npm run build'
-                sh 'tar -czf build.tar.gz -C build .'
+                dir('frontend') {
+                    sh 'npm run build'
+                    sh 'tar -czf build.tar.gz -C build .'
+                }
             }
         }
         stage('Deploy') {
             steps {
-                script {
-                    def response = sh(script: "curl -X POST ${CLOUDFLARE_DEPLOY_HOOK_URL} \
-                                -H 'Authorization: Bearer ${CLOUDFLARE_TOKEN}' \
-                                -F 'content=@build.tar.gz'", returnStdout: true)
-                    echo "Response from Cloudflare Deploy Hook: ${response}"
+                dir('frontend') {
+                    script {
+                        def response = sh(script: "curl -X POST ${CLOUDFLARE_DEPLOY_HOOK_URL} \
+                                    -H 'Authorization: Bearer ${CLOUDFLARE_TOKEN}' \
+                                    -F 'content=@build.tar.gz'", returnStdout: true)
+                        echo "Response from Cloudflare Deploy Hook: ${response}"
+                    }
                 }
             }
         }
     }
     post {
         always {
-            archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+            dir('frontend') {
+                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+            }
         }
     }
 }
