@@ -26,7 +26,7 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps {Commandes pour déployer vers Cloudflare Pages
+            steps {
                 script {
                     def response = sh(script: "curl -X POST ${CLOUDFLARE_DEPLOY_HOOK_URL} \
                                 -H 'Authorization: Bearer ${CLOUDFLARE_TOKEN}' \
