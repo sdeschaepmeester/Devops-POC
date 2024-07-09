@@ -8,7 +8,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          C'est la partie front end du projet !
+          C'est la partie front end du projet, en React !
         </p>
         <a
           className="App-link"
