@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'NodeJS-18' // Installation NodeJS
+    }
+    environment {
+        GIT_CREDENTIALS = credentials('github-credentials') // ID credential GitHub
+        CLOUDFLARE_TOKEN = credentials('cloudflare-token') // Token Cloudflare
+        CLOUDFLARE_DEPLOY_HOOK_URL = 'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/060e24f7-0558-49d7-9ace-ef984d9e33ee' // URL de Deploy Hook
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/sdeschaepmeester/Devops-POC', credentialsId: 'github-credentials'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+                sh 'tar -czf build.tar.gz -C build .'
+            }
+        }
+        stage('Deploy') {
+            steps {Commandes pour déployer vers Cloudflare Pages
+                script {
+                    def response = sh(script: "curl -X POST ${CLOUDFLARE_DEPLOY_HOOK_URL} \
+                                -H 'Authorization: Bearer ${CLOUDFLARE_TOKEN}' \
+                                -F 'content=@build.tar.gz'", returnStdout: true)
+                    echo "Response from Cloudflare Deploy Hook: ${response}"
+                }
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+        }
+    }
+}
