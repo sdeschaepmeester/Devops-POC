@@ -15,8 +15,10 @@ pipeline {
             }
         }
         stage('Install Dependencies') {
-            dir('frontend') {
-                sh 'npm install'
+            setps {
+                dir('frontend') {
+                    sh 'npm install'
+                }
             }
         }
         stage('Build') {
