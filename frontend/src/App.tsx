@@ -11,7 +11,7 @@ function App() {
           C'est la partie front end du projet, en React !
         </p>
         <p>
-          Ce projet est lié à Cloudflare et à Jenkins.
+          Ce projet est lié à Cloudflare, Jenkins et Docker !
         </p>
         <a
           className="App-link"
