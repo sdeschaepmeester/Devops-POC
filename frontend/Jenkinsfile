@@ -1,10 +1,13 @@
 pipeline {
     agent any
     tools {
-        nodejs 'NodeJS-18' // Installation NodeJS
+        nodejs 'NodeJS-18', // Installation NodeJS
+        dockerTool 'Docker' // Installation Docker
     }
     environment {
         GIT_CREDENTIALS = credentials('github-credentials') // ID credential GitHub
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Docker Hub credentials
+        DOCKER_IMAGE = 'deschaepmeesters/frontend-app'
         CLOUDFLARE_TOKEN = credentials('cloudflare-token') // Token Cloudflare
         CLOUDFLARE_DEPLOY_HOOK_URL = 'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/060e24f7-0558-49d7-9ace-ef984d9e33ee' // URL de Deploy Hook
     }
@@ -29,6 +32,18 @@ pipeline {
                 }
             }
         }
+        stage('Docker Build and Push') {
+            steps {
+                script {
+                    dir('frontend') {
+                        sh 'docker build -t ${DOCKER_IMAGE} .'
+                        withDockerRegistry([credentialsId: 'dockerhub-credentials', url: 'https://index.docker.io/v1/']) {
+                            sh 'docker push ${DOCKER_IMAGE}'
+                        }
+                    }
+                }
+            }
+        }
         stage('Deploy') {
             steps {
                 dir('frontend') {
@@ -41,6 +56,19 @@ pipeline {
                 }
             }
         }
+    }
+        // stage('Deploy') {
+        //     steps {
+        //         dir('frontend') {
+        //             script {
+        //                 def response = sh(script: "curl -X POST ${CLOUDFLARE_DEPLOY_HOOK_URL} \
+        //                             -H 'Authorization: Bearer ${CLOUDFLARE_TOKEN}' \
+        //                             -F 'content=@build.tar.gz'", returnStdout: true)
+        //                 echo "Response from Cloudflare Deploy Hook: ${response}"
+        //             }
+        //         }
+        //     }
+        // }
     }
     post {
         always {
