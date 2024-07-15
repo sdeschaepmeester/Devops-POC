@@ -36,6 +36,7 @@ pipeline {
         stage('Docker Build and Push') {
             steps {
                 script {
+                    // Docker build and push
                     docker.withRegistry(DOCKER_REGISTRY, DOCKERHUB_CREDENTIALS) {
                         dir('frontend') {
                             sh "docker build -t ${DOCKER_IMAGE} ."
@@ -49,6 +50,7 @@ pipeline {
             steps {
                 dir('frontend') {
                     script {
+                        // Deploy to Cloudflare
                         def response = sh(script: "curl -X POST ${CLOUDFLARE_DEPLOY_HOOK_URL} \
                                     -H 'Authorization: Bearer ${CLOUDFLARE_TOKEN}' \
                                     -F 'content=@build.tar.gz'", returnStdout: true)
