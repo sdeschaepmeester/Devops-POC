@@ -1,21 +1,18 @@
-# Build application
-FROM node:18-alpine as build
+# Utilise l'image Node.js comme base
+FROM node:18
 
+# Définis le répertoire de travail à l'intérieur du conteneur
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+# Copie les fichiers nécessaires dans le conteneur
+COPY package.json package-lock.json /app/
+COPY . /app/
 
+# Installe les dépendances
 RUN npm install
 
-COPY . .
+# Expose le port 3000 pour que l'application puisse être accessible
+EXPOSE 3000
 
-RUN npm run build
-
-# User Nginx server
-FROM nginx:alpine
-
-COPY --from=build /app/build /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Commande par défaut pour démarrer l'application
+CMD ["npm", "start"]
