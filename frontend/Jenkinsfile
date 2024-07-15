@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         GIT_CREDENTIALS = credentials('github-credentials') // ID credential GitHub
-        DOCKERHUB_CREDENTIALS = credentials('docker-credentials') // Docker Hub credentials
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Docker Hub credentials
         DOCKER_REGISTRY = 'https://index.docker.io/v1/'
         DOCKER_IMAGE = 'deschaepmeesters/frontend-app'
         CLOUDFLARE_TOKEN = credentials('cloudflare-token') // Token Cloudflare
