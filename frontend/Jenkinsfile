@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        nodejs 'NodeJS-18', // Installation NodeJS
+        nodejs 'NodeJS-18' // Installation NodeJS
         dockerTool 'Docker' // Installation Docker
     }
     environment {
