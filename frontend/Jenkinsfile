@@ -6,7 +6,7 @@ pipeline {
     }
     environment {
         GIT_CREDENTIALS = credentials('github-credentials') // ID credential GitHub
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials') // Docker Hub credentials
+        DOCKERHUB_CREDENTIALS = credentials('docker-credentials') // Docker Hub credentials
         DOCKER_IMAGE = 'deschaepmeesters/frontend-app'
         CLOUDFLARE_TOKEN = credentials('cloudflare-token') // Token Cloudflare
         CLOUDFLARE_DEPLOY_HOOK_URL = 'https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/060e24f7-0558-49d7-9ace-ef984d9e33ee' // URL de Deploy Hook
