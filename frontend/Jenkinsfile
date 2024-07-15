@@ -2,7 +2,7 @@ pipeline {
     agent any
     tools {
         nodejs 'NodeJS-18' // Installation NodeJS
-        dockerTool 'Docker' // Installation Docker
+        dockerTool 'docker' // Installation Docker
     }
     environment {
         GIT_CREDENTIALS = credentials('github-credentials') // ID credential GitHub
