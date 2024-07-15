@@ -57,19 +57,6 @@ pipeline {
             }
         }
     }
-        // stage('Deploy') {
-        //     steps {
-        //         dir('frontend') {
-        //             script {
-        //                 def response = sh(script: "curl -X POST ${CLOUDFLARE_DEPLOY_HOOK_URL} \
-        //                             -H 'Authorization: Bearer ${CLOUDFLARE_TOKEN}' \
-        //                             -F 'content=@build.tar.gz'", returnStdout: true)
-        //                 echo "Response from Cloudflare Deploy Hook: ${response}"
-        //             }
-        //         }
-        //     }
-        // }
-    }
     post {
         always {
             dir('frontend') {
