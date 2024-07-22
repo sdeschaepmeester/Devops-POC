@@ -1,11 +1,11 @@
-# Utiliser l'image Java officielle comme base
-FROM openjdk:17-jdk-slim
+# Use an official OpenJDK runtime as a parent image
+FROM openjdk:22-jdk-slim
 
-# Créer un répertoire pour l'application
+# Set the working directory in the container
 WORKDIR /app
 
-# Copier le JAR dans l'image Docker
-COPY HelloWorld.jar .
+# Copy the JAR file into the container at /app
+COPY jar/backend.jar /app/backend.jar
 
-# Spécifier la commande d'exécution de l'application
-ENTRYPOINT ["java", "-jar", "HelloWorld.jar"]
+# Run the JAR file
+CMD ["java", "-jar", "backend.jar"]
