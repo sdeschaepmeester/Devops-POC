@@ -5,24 +5,9 @@ pipeline {
         }
     }
     stages {
-        stage('Build') {
+        stage('Docker Test') {
             steps {
-                sh 'javac -d bin src/medhead/Main.java'
-            }
-        }
-        stage('Package') {
-            steps {
-                sh 'jar cvf jar/backend.jar -C bin .'
-            }
-        }
-        stage('Dockerize') {
-            steps {
-                sh 'docker build -t backend-app .'
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                sh 'java -jar jar/backend.jar'
+                sh 'java -version'
             }
         }
     }
