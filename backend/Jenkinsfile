@@ -1,13 +1,19 @@
 pipeline {
-    agent {
-        docker {
-            image 'openjdk:22-jdk-slim'
-        }
-    }
+    agent any
     stages {
-        stage('Docker Test') {
+        stage('Checkout') {
             steps {
-                sh 'java -version'
+                git branch: 'main', url: 'https://github.com/yourusername/your-repo.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
+                    docker.image('openjdk:22-jdk-slim').inside {
+                        sh 'java -version'
+                        // Add additional build steps here
+                    }
+                }
             }
         }
     }
