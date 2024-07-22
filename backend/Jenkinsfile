@@ -3,8 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/sdeschaepmeester/Devops-POC.git'
-            }
+                git branch: 'main', url: 'https://github.com/sdeschaepmeester/Devops-POC.git', credentialsId: 'github-creds'            }
         }
         stage('Build') {
             steps {
