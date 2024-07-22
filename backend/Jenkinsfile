@@ -1,0 +1,41 @@
+pipeline {
+    agent {
+        docker {
+            image 'openjdk:22-jdk-slim'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    // Build the project
+                    sh 'javac -d bin src/medhead/Main.java'
+                }
+            }
+        }
+        stage('Package') {
+            steps {
+                script {
+                    // Package the project into a JAR
+                    sh 'jar cvf jar/backend.jar -C bin .'
+                }
+            }
+        }
+        stage('Dockerize') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh 'docker build -t backend-app .'
+                }
+            }
+        }
+        stage('Run Tests') {
+            steps {
+                script {
+                    // Run tests if you have any
+                    sh 'java -jar jar/backend.jar'
+                }
+            }
+        }
+    }
+}
