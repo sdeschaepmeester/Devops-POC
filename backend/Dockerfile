@@ -5,7 +5,7 @@ FROM openjdk:22-jdk-slim
 WORKDIR /app
 
 # Copier le JAR dans le conteneur
-COPY jar/backend.jar /app/backend.jar
+COPY target/backend.jar /app/backend.jar
 
 # Exposer le port que l'application utilise (ajuste en fonction de ton application)
 EXPOSE 8080

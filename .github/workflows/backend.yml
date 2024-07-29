@@ -19,14 +19,15 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build JAR
+      - name: Compile Java source code
         run: |
-          cd ../backend
-          ./mvnw clean package
+          mkdir -p target
+          javac -d target src/com/example/*.java
+          jar cvf target/backend.jar -C target .
 
       - name: Build Docker image
         run: |
-          cd ../backend
+          cd backend
           docker build -t deschaepmeesters/backend:latest .
 
       - name: Log in to Docker Hub
