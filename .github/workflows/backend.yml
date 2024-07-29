@@ -21,9 +21,9 @@ jobs:
 
       - name: Compile Java source code
         run: |
-          mkdir -p target
-          javac -d target src/com/example/*.java
-          jar cvf target/backend.jar -C target .
+          mkdir -p backend/jar
+          javac -d backend/jar backend/src/medhead/Main.java
+          jar cvf backend/jar/backend.jar -C backend/jar .
 
       - name: Build Docker image
         run: |
