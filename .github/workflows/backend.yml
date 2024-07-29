@@ -21,12 +21,12 @@ jobs:
 
       - name: Build JAR
         run: |
-          cd backend
+          cd ../backend
           ./mvnw clean package
 
       - name: Build Docker image
         run: |
-          cd backend
+          cd ../backend
           docker build -t deschaepmeesters/backend:latest .
 
       - name: Log in to Docker Hub
