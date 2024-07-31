@@ -16,20 +16,20 @@ COPY . .
 # Construire l'application pour la production
 RUN npm run build
 
-# Étape 2 : Servir l'application avec un serveur Node.js
+# Étape 2 : Servir l'application avec serve
 FROM node:18
+
+# Installer `serve` pour servir l'application
+RUN npm install -g serve
+
+# Copier les fichiers buildés depuis l'étape précédente
+COPY --from=build /app/build /app/build
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers de construction depuis l'étape précédente
-COPY --from=build /app/build /app/build
+# Exposer le port que l'application utilisera
+EXPOSE $PORT
 
-# Installer un serveur statique pour Node.js
-RUN npm install -g serve
-
-# Exposer le port 3000 (ou tout autre port que vous souhaitez utiliser)
-EXPOSE 3000
-
-# Démarrer le serveur statique
-CMD ["serve", "-s", "build", "-l", "3000"]
+# Démarrer l'application avec `serve`
+CMD ["sh", "-c", "serve -s build -l $PORT"]
