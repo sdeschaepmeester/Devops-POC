@@ -30,8 +30,16 @@ jobs:
         run: |
           docker push deschaepmeesters/frontend:latest
 
+      - name: Install Heroku CLI
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Log in to Heroku CLI
+        run: heroku auth:token
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
       - name: Log in to Heroku Container Registry
-        run: heroku container:login
+        run: echo ${{ secrets.HEROKU_API_KEY }} | docker login --username=_ --password-stdin registry.heroku.com
 
       - name: Deploy to Heroku
         run: |
