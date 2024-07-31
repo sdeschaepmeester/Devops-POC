@@ -3,7 +3,9 @@ name: Build and Push Backend Docker Image
 on:
   push:
     branches:
-      - main  # Trigger on pushes to the main branch !
+      - main  # Trigger on main branch
+    paths:
+        - 'backend/**'  # Trigger when changes inside backend subfolder
 
 jobs:
   build:
