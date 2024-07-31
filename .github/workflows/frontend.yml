@@ -1,4 +1,4 @@
-name: Build and Push Frontend Docker Image
+name: Build, Push, and Deploy Frontend Docker Image
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - 'frontend/**'  # Trigger when changes inside frontend subfolder
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,3 +29,14 @@ jobs:
       - name: Push Docker image
         run: |
           docker push deschaepmeesters/frontend:latest
+
+      - name: Log in to Heroku Container Registry
+        run: heroku container:login
+
+      - name: Deploy to Heroku
+        run: |
+          docker tag deschaepmeesters/frontend:latest registry.heroku.com/medhead-frontend/web
+          docker push registry.heroku.com/medhead-frontend/web
+          heroku container:release web --app medhead-frontend
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
