@@ -11,7 +11,7 @@ function App() {
           C'est la partie front end du projet, en React !
         </p>
         <p>
-          Ce projet est lié à Github actions, dockerhub et cloudflare !
+          Ce projet est lié à Github actions, dockerhub et Cloudflare !
         </p>
         <a
           className="App-link"
