@@ -16,14 +16,20 @@ COPY . .
 # Construire l'application pour la production
 RUN npm run build
 
-# Étape 2 : Servir l'application avec un serveur Nginx
-FROM nginx:alpine
+# Étape 2 : Servir l'application avec un serveur Node.js
+FROM node:18
 
-# Copier les fichiers buildés depuis l'étape précédente
-COPY --from=build /app/build /usr/share/nginx/html
+# Définir le répertoire de travail
+WORKDIR /app
 
-# Exposer le port 80 pour accéder à l'application
-EXPOSE 80
+# Copier les fichiers de construction depuis l'étape précédente
+COPY --from=build /app/build /app/build
 
-# Démarrer Nginx pour servir l'application
-CMD ["nginx", "-g", "daemon off;"]
+# Installer un serveur statique pour Node.js
+RUN npm install -g serve
+
+# Exposer le port 3000 (ou tout autre port que vous souhaitez utiliser)
+EXPOSE 3000
+
+# Démarrer le serveur statique
+CMD ["serve", "-s", "build", "-l", "3000"]
