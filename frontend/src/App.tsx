@@ -11,7 +11,7 @@ function App() {
           C'est la partie front end du projet, en React !
         </p>
         <p>
-          Ce projet est lié à Github Actions et Heroku !!
+          Ce projet est lié à Github Actions et Heroku !
         </p>
         <a
           className="App-link"
