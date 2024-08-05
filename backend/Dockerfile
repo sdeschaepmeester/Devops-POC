@@ -10,5 +10,5 @@ COPY jar/backend.jar /app/backend.jar
 # Exposer le port que l'application utilise (ajuste en fonction de ton application)
 EXPOSE 8080
 
-# Exécuter le JAR
+# Exécuter le jar
 CMD ["java", "-jar", "backend.jar"]
