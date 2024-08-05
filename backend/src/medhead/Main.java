@@ -8,10 +8,9 @@ import java.sql.Statement;
 public class Main {
     public static void main(String[] args) {
         //String url = System.getenv("DATABASE_URL"); // Assurez-vous que DATABASE_URL est configuré dans votre environnement
-        String url = "postgresql://postgres.ueqjqptqgpomxlznebun:viorne99!-drew@aws-0-eu-central-1.pooler.supabase.com:6543/postgres";
+        String url = "jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres";
 		String user = "postgres.ueqjqptqgpomxlznebun";
         String password = "viorne99!-drew";
-                System.out.println("coucou !");
 
         try {
 			System.out.println("salut !");
@@ -24,7 +23,7 @@ public class Main {
             String query = "SELECT * FROM users";
             ResultSet rs = stmt.executeQuery(query);
             
-            // Afficher les résultats
+            // Afficher les résultats en console
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String username = rs.getString("username");
