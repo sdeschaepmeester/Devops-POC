@@ -17,7 +17,10 @@ public class Speciality {
     private String specialityGroup;
     private String speciality;
 
-    // Getters and Setters
+    // Constructeur sans argument requis par JPA
+    public Speciality() {}
+
+    // Getters et Setters
     public Long getId() {
         return id;
     }
@@ -40,5 +43,14 @@ public class Speciality {
 
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
+    }
+
+    @Override
+    public String toString() {
+        return "Speciality{" +
+                "id=" + id +
+                ", specialityGroup='" + specialityGroup + '\'' +
+                ", speciality='" + speciality + '\'' +
+                '}';
     }
 }
