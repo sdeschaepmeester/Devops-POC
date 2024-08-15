@@ -1,1 +1,21 @@
-/.metadata/
+# Fichiers de logs
+*.log
+*.log.*
+
+# Répertoires de build
+target/
+out/
+bin/
+
+# Configurations IDEs
+# Eclipse
+.metadata/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.project
+.settings/
+.loadpath
