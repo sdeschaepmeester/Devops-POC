@@ -1,0 +1,5 @@
+com\medhead\backend\BackendApplication.class
+com\medhead\backend\service\SpecialityService.class
+com\medhead\backend\model\Speciality.class
+com\medhead\backend\controller\SpecialityController.class
+com\medhead\backend\repository\SpecialityRepository.class
