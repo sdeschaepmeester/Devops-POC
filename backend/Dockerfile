@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY jar/backend.jar /app/backend.jar
 
-EXPOSE 8080
+EXPOSE 9090
 
-ENV PORT 8080
+ENV PORT 9090
 
 CMD ["java", "-jar", "backend.jar"]
