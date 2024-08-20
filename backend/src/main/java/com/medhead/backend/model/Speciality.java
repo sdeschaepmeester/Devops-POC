@@ -10,6 +10,7 @@ public class Speciality {
         this.speciality_group = speciality_group;
         this.speciality = speciality;
     }
+
     
     public int getId() {
         return id;

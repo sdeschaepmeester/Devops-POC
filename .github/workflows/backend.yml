@@ -48,10 +48,3 @@ jobs:
       - name: Push Docker image
         run: |
           docker push deschaepmeesters/backend:latest
-
-      - name: Deploy to Heroku
-        uses: nogsantos/scp-deploy@master
-        with:
-          heroku_app_name: medhead-backend
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          docker_image: deschaepmeesters/backend:latest
