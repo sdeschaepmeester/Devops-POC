@@ -39,7 +39,7 @@ const SearchHospitalsForm: React.FC = () => {
             const results = response.data.map((result: any) => result.display_name);
             setSuggestions(results);
         } catch (error) {
-            console.error('Error fetching address suggestions:', error);
+            console.error('Error fetching address suggestions :', error);
             setSuggestions([]);
         } finally {
             setLoading(false);
