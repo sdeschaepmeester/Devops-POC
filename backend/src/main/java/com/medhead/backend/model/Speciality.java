@@ -11,6 +11,7 @@ public class Speciality {
         this.speciality = speciality;
     }
 
+    
     public int getId() {
         return id;
     }

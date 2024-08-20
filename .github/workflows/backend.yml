@@ -50,7 +50,7 @@ jobs:
           docker push deschaepmeesters/backend:latest
 
       - name: Deploy to Heroku
-        uses: akshatmittal/heroku-docker-deploy@v1
+        uses: nogsantos/ssh-scp-deploy
         with:
           heroku_app_name: medhead-backend
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
