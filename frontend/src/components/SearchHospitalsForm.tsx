@@ -72,7 +72,7 @@ const SearchHospitalsForm: React.FC = () => {
             }}
         >
             <TextField
-                label="Entrer votre adresse"
+                label="Entrez votre adresse"
                 variant="outlined"
                 fullWidth
                 value={address}
@@ -120,7 +120,7 @@ const SearchHospitalsForm: React.FC = () => {
                 </List>
             )}
             <FormControl variant="outlined" fullWidth>
-                <InputLabel id="specialty-label">Sélectionner les spécialités</InputLabel>
+                <InputLabel id="specialty-label">Sélectionnez les spécialités</InputLabel>
                 <Select
                     labelId="specialty-label"
                     label="Sélectionner les spécialités"
