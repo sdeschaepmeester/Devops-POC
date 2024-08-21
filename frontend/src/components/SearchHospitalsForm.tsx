@@ -15,19 +15,18 @@ const SearchHospitalsForm: React.FC = () => {
     const [specialities, setSpecialities] = useState<SpecialityModel[]>([]);
     const [selectedSpecialities, setSelectedSpecialities] = useState<SpecialityModel[]>([]);
 
-    useEffect(() => {
-        const fetchSpecialities = async () => {
-            const specialitiesData = await getSpecialities();
-            setSpecialities(specialitiesData);
-        };
-        fetchSpecialities();
-    }, []);
+    // useEffect(() => {
+    //     const fetchSpecialities = async () => {
+    //         const specialitiesData = await getSpecialities();
+    //         setSpecialities(specialitiesData);
+    //     };
+    //     fetchSpecialities();
+    // }, []);
 
 
     // Select a speciality
     const handleSpecialityChange = (event: React.ChangeEvent<{ value: unknown }>) => {
        // setSelectedSpecialities(event.target.value as string[]);
-       console.log("test")
     };
 
     // Detect if we need to call the Nominatim API to fetch corresponding address results
