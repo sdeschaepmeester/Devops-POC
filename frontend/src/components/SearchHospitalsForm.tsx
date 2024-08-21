@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
-import { Box, TextField, MenuItem, Select, FormControl, InputLabel, Button, List, ListItem, CircularProgress,
-    InputAdornment, IconButton
- } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import {
+    Box, TextField, MenuItem, Select, FormControl, InputLabel, Button, List, ListItem, CircularProgress,
+    InputAdornment, IconButton, Checkbox, ListItemText
+} from '@mui/material';
 import axios from 'axios';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { getSpecialities } from '../api/specialitiesService';
+import SpecialityModel from '../models/specialityModel';
 
 const SearchHospitalsForm: React.FC = () => {
     const [address, setAddress] = useState<string>('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [specialities, setSpecialities] = useState<SpecialityModel[]>([]);
+    const [selectedSpecialities, setSelectedSpecialities] = useState<SpecialityModel[]>([]);
+
+    useEffect(() => {
+        const fetchSpecialities = async () => {
+            const specialitiesData = await getSpecialities();
+            setSpecialities(specialitiesData);
+        };
+        fetchSpecialities();
+    }, []);
+
+
+    // Select a speciality
+    const handleSpecialityChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+       // setSelectedSpecialities(event.target.value as string[]);
+       console.log("test")
+    };
 
     // Detect if we need to call the Nominatim API to fetch corresponding address results
     const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,7 +85,7 @@ const SearchHospitalsForm: React.FC = () => {
                 flexDirection: 'column',
                 gap: '20px',
                 width: '100%',
-                maxWidth: '500px',  // Augmenter la largeur du formulaire
+                maxWidth: '500px',
                 padding: '20px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 borderRadius: '8px'
@@ -126,9 +146,12 @@ const SearchHospitalsForm: React.FC = () => {
                     label="Sélectionner les spécialités"
                     defaultValue=""
                 >
-                    <MenuItem value="cardiology">Cardiologie</MenuItem>
-                    <MenuItem value="dermatology">Dermatologie</MenuItem>
-                    <MenuItem value="pediatrics">Pédiatrie</MenuItem>
+                    {specialities.map((speciality: SpecialityModel, index: number) => (
+                        <MenuItem key={index} value={speciality.speciality}>
+                            <Checkbox checked={selectedSpecialities.indexOf(speciality) > -1} />
+                            <ListItemText primary={`${speciality.speciality_group} - ${speciality.speciality}`} />
+                        </MenuItem>
+                    ))}
                 </Select>
             </FormControl>
             <Button variant="contained" color="primary">

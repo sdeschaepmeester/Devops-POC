@@ -6,9 +6,15 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 // Get all specialities
 export const getSpecialities = async (): Promise<SpecialityModel[]> => {
     try {
-        const response = await axios.get<SpecialityModel[]>(`${BASE_URL}/Specialities`);
+        const response = await axios.get<SpecialityModel[]>(`${BASE_URL}/Specialities`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Custom-Header': 'YourCustomValue'
+            }
+        });
         return response.data;
     } catch (error) {
-        throw 'Failed to fetch specialities'+ error;
+        throw 'Failed to fetch specialities: ' + error;
     }
 };
