@@ -28,6 +28,7 @@ const SearchHospitalsForm: React.FC = () => {
     // Select a speciality
     const handleSpecialityChange = (event: React.ChangeEvent<{ value: unknown }>) => {
        // setSelectedSpecialities(event.target.value as string[]);
+       
     };
 
     // Detect if we need to call the Nominatim API to fetch corresponding address results
