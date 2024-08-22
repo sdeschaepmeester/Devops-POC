@@ -10,7 +10,6 @@ export const getSpecialities = async (): Promise<SpecialityModel[]> => {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Origin': '*',
-                'Custom-Header': 'YourCustomValue'
             }
         });
         return response.data;

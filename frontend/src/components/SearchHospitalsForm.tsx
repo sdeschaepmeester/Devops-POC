@@ -15,13 +15,14 @@ const SearchHospitalsForm: React.FC = () => {
     const [specialities, setSpecialities] = useState<SpecialityModel[]>([]);
     const [selectedSpecialities, setSelectedSpecialities] = useState<SpecialityModel[]>([]);
 
-    // useEffect(() => {
-    //     const fetchSpecialities = async () => {
-    //         const specialitiesData = await getSpecialities();
-    //         setSpecialities(specialitiesData);
-    //     };
-    //     fetchSpecialities();
-    // }, []);
+    useEffect(() => {
+        const fetchSpecialities = async () => {
+            const specialitiesData = await getSpecialities();
+            setSpecialities(specialitiesData);
+            console.log(specialitiesData)
+        };
+        fetchSpecialities();
+    }, []);
 
 
     // Select a speciality
