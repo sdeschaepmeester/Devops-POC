@@ -14,13 +14,13 @@ public class SpecialityController {
         this.specialityDao = specialityDao;
     }
 
-    @CrossOrigin(origins = "https://medhead-backend-d3ff39b61df1.herokuapp.com")
+    @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
     @GetMapping("/Specialities")
     public List<Speciality> getAllSpecialities() {
         return specialityDao.findAll();
     }
 
-    @CrossOrigin(origins = "https://medhead-backend-d3ff39b61df1.herokuapp.com")
+    @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
     @GetMapping(value = "/Specialities/{id}")
     public Speciality getSpecialityById(@PathVariable int id) {
         return specialityDao.findById(id);
