@@ -1,10 +1,7 @@
 package com.medhead.backend.web.controller;
-
 import com.medhead.backend.model.User;
 import com.medhead.backend.web.dao.UserDao;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
