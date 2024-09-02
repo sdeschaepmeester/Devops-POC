@@ -28,7 +28,7 @@ public class SecurityConfig {
                 }))
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("Signup", "Login", "Hospitals").permitAll()
+                                .requestMatchers("Signup", "Login", "Hospitals/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 

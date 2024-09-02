@@ -3,11 +3,11 @@ package com.medhead.backend.model;
 public class Hospital {
     private int id;
     private int available_beds;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
     private String name;
 
-    public Hospital(int id, int available_beds, float latitude, float longitude, String name) {
+    public Hospital(int id, int available_beds, double latitude, double longitude, String name) {
         this.id = id;
         this.available_beds = available_beds;
         this.latitude = latitude;
@@ -23,11 +23,11 @@ public class Hospital {
         return available_beds;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
@@ -43,11 +43,11 @@ public class Hospital {
         this.available_beds = available_beds;
     }
 
-    public void setLatitude(float latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(float longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

@@ -31,4 +31,10 @@ public class HospitalController {
     public void addHospital(@RequestBody Hospital hospital) {
         hospitalDao.save(hospital);
     }
+
+    @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
+    @GetMapping("/Hospitals/nearby")
+    public Hospital getHospitalsNearby(@RequestBody double latitude, double longitude, String specialityId) {
+        return hospitalDao.getHospitalsNearby(latitude, longitude, specialityId);
+    }
 }

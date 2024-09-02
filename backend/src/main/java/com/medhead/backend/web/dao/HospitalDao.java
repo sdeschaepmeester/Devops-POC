@@ -10,5 +10,5 @@ public interface HospitalDao {
     List<Hospital> findAll();
     Hospital findById(int id);
     Hospital save(Hospital hospital);
-
+    Hospital getHospitalsNearby(double latitude, double longitude, String specialityId);
 }

@@ -26,8 +26,8 @@ public class HospitalDaoImpl implements HospitalDao {
                 Hospital hospital = new Hospital(
                         rs.getInt("id"),
                         rs.getInt("available_beds"),
-                        rs.getInt("latitude"),
-                        rs.getInt("longitude"),
+                        rs.getDouble("latitude"),
+                        rs.getDouble("longitude"),
                         rs.getString("name")
                 );
                 hospitals.add(hospital);
@@ -54,8 +54,8 @@ public class HospitalDaoImpl implements HospitalDao {
                 hospital = new Hospital(
                         rs.getInt("id"),
                         rs.getInt("available_beds"),
-                        rs.getInt("latitude"),
-                        rs.getInt("longitude"),
+                        rs.getDouble("latitude"),
+                        rs.getDouble("longitude"),
                         rs.getString("name")
                 );
             }
@@ -86,4 +86,46 @@ public class HospitalDaoImpl implements HospitalDao {
 
         return hospital;
     }
+
+    @Override
+    public Hospital getHospitalsNearby(double latitude, double longitude, String specialityId) {
+        Hospital nearestHospital = null;
+        String sql = """
+            SELECT *,
+                (6371 * acos(cos(radians(?)) * cos(radians(latitude)) * cos(radians(longitude) - radians(?))
+                + sin(radians(?)) * sin(radians(latitude)))) AS distance
+            FROM hospitals
+            WHERE available_beds > 0
+            AND specialities_id @> ARRAY[?]::varchar[]
+            ORDER BY distance
+            LIMIT 1;
+            """;
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDouble(1, latitude);
+            stmt.setDouble(2, longitude);
+            stmt.setDouble(3, latitude);
+            stmt.setString(4, specialityId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    nearestHospital = new Hospital(
+                            rs.getInt("id"),
+                            rs.getInt("available_beds"),
+                            rs.getDouble("latitude"),
+                            rs.getDouble("longitude"),
+                            rs.getString("name")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return nearestHospital;
+    }
+
 }
