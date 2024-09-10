@@ -1,9 +1,21 @@
 package com.medhead.backend.model;
 
+import java.util.Collection;
+
 public class User {
-    private int id;
+    private Long id;
     private String username;
     private String password;
+
+    public Collection<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<String> roles) {
+        this.roles = roles;
+    }
+
+    private Collection<String> roles;
 
     public void setUsername(String username) {
         this.username = username;
@@ -13,13 +25,13 @@ public class User {
         this.password = password;
     }
 
-    public User(int id, String username, String password) {
+    public User(Long id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -31,7 +43,7 @@ public class User {
         return password;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
