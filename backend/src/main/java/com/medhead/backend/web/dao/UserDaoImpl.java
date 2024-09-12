@@ -1,7 +1,6 @@
 package com.medhead.backend.web.dao;
 
 import com.medhead.backend.model.User;
-import com.medhead.backend.web.config.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,9 +17,6 @@ import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public List<User> findAll() {
@@ -94,23 +90,23 @@ public class UserDaoImpl implements UserDao {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();  // Use this for password hashing
 
-    @Override
-    public String login(User user) throws Exception {
-        User storedUser = findByUsername(user.getUsername());
-
-        if (storedUser == null) {
-            throw new Exception("User not found");
-        }
-
-        // Compare stored hashed password with the password provided by the user
-        if (!passwordEncoder.matches(user.getPassword(), storedUser.getPassword())) {
-            throw new Exception("Invalid password");
-        }
-
-        // Generate token
-        Authentication authentication = new UsernamePasswordAuthenticationToken(storedUser, null, new ArrayList<>());
-        return jwtTokenProvider.generateToken(authentication);
-    }
+//    @Override
+//    public String login(User user) throws Exception {
+//        User storedUser = findByUsername(user.getUsername());
+//
+//        if (storedUser == null) {
+//            throw new Exception("User not found");
+//        }
+//
+//        // Compare stored hashed password with the password provided by the user
+//        if (!passwordEncoder.matches(user.getPassword(), storedUser.getPassword())) {
+//            throw new Exception("Invalid password");
+//        }
+//
+//        // Generate token
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(storedUser, null, new ArrayList<>());
+//        return jwtTokenProvider.generateToken(authentication);
+//    }
 
     // Example method to retrieve user details by username
     private User findByUsername(String username) {

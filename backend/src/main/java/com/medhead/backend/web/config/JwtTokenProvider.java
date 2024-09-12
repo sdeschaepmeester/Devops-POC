@@ -31,7 +31,7 @@ public class JwtTokenProvider {
     @Autowired
     private UserController userController;
 
-    private int jwtExpirationInMs = 864_000_000;
+    private int jwtExpirationInMs = 86_400_000; // 1 day
 
     public String generateToken(Authentication authentication) {
         User userPrincipal = (User) authentication.getPrincipal();

@@ -1,7 +1,6 @@
 package com.medhead.backend.web.controller;
 
 import com.medhead.backend.model.User;
-import com.medhead.backend.web.config.JwtTokenProvider;
 import com.medhead.backend.web.dao.UserDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +15,9 @@ import java.util.Optional;
 @RestController
 public class UserController {
     private final UserDao userDao;
-    private JwtTokenProvider jwtTokenProvider;
 
-    public UserController(UserDao userDao, JwtTokenProvider jwtTokenProvider){
+    public UserController(UserDao userDao){
         this.userDao = userDao;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
@@ -41,15 +38,15 @@ public class UserController {
         userDao.save(user);
     }
 
-    @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
-    @PostMapping(value = "/Users/Login")
-    public ResponseEntity<?> login(@RequestBody User user) {
-        try {
-            String token = userDao.login(user);
-            return ResponseEntity.ok().body(Collections.singletonMap("token", token));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
-        }
-    }
+//    @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
+//    @PostMapping(value = "/Users/Login")
+//    public ResponseEntity<?> login(@RequestBody User user) {
+//        try {
+//            String token = userDao.login(user);
+//            return ResponseEntity.ok().body(Collections.singletonMap("token", token));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed: " + e.getMessage());
+//        }
+//    }
 
 }

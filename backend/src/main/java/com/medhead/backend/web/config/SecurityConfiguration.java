@@ -40,7 +40,7 @@ public class SecurityConfiguration {
 
         // Configure authorization
         http.authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/Users/Login").permitAll()
+                .requestMatchers("/Auth/Login").permitAll()
                 .anyRequest().authenticated()
         );
 
