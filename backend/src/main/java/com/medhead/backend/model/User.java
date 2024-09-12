@@ -6,6 +6,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private Collection<String> roles;
 
     public Collection<String> getRoles() {
         return roles;
@@ -14,8 +15,6 @@ public class User {
     public void setRoles(Collection<String> roles) {
         this.roles = roles;
     }
-
-    private Collection<String> roles;
 
     public void setUsername(String username) {
         this.username = username;
