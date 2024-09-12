@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "7208c0a9-5753-4a21-b162-f3602ef4c22d",
+		"name": "PROD",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37174505"
+	},
+	"item": [
+		{
+			"name": "Hospitals",
+			"item": [
+				{
+					"name": "Get all hospitals",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Hospitals",
+							"protocol": "https",
+							"host": [
+								"medhead-backend-d3ff39b61df1",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"Hospitals"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get hospital by id",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Hospitals/3",
+							"protocol": "https",
+							"host": [
+								"medhead-backend-d3ff39b61df1",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"Hospitals",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Request to manage hospitals entities\n\nEndpoints:\n\n- Get all Hospitals\n    \n- Get one Hospital\n    \n- Get list of hospitals (filtered)"
+		},
+		{
+			"name": "Specialities",
+			"item": [
+				{
+					"name": "Get all specialities",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Specialities",
+							"protocol": "https",
+							"host": [
+								"medhead-backend-d3ff39b61df1",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"Specialities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get speciality by id",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Specialities/3",
+							"protocol": "https",
+							"host": [
+								"medhead-backend-d3ff39b61df1",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"Specialities",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Request to manage specialities entities\n\nEndpoints:\n\n- Get all Specialities\n    \n- Get one Speciality"
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get all users",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Users",
+							"protocol": "https",
+							"host": [
+								"medhead-backend-d3ff39b61df1",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users Copy",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"andrew\",\r\n    \"passwordRaw\": \"andrew\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Users",
+							"protocol": "https",
+							"host": [
+								"medhead-backend-d3ff39b61df1",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"Users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Users/1",
+							"protocol": "https",
+							"host": [
+								"medhead-backend-d3ff39b61df1",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"Users",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example get user by id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Users/1",
+									"protocol": "https",
+									"host": [
+										"medhead-backend-d3ff39b61df1",
+										"herokuapp",
+										"com"
+									],
+									"path": [
+										"Users",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		}
+	]
+}

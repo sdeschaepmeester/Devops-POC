@@ -1,9 +1,6 @@
 package com.medhead.backend.web.dao;
 
 import com.medhead.backend.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Repository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -18,6 +15,10 @@ import java.util.Optional;
 @Repository
 public class UserDaoImpl implements UserDao {
 
+    /**
+     * Retrieves a list of all users from the database.
+     * @return a list of User objects representing all users in the system
+     */
     @Override
     public List<User> findAll() {
         List<User> users = new ArrayList<>();
@@ -43,6 +44,11 @@ public class UserDaoImpl implements UserDao {
         return users;
     }
 
+    /**
+     * Retrieves a user by their unique ID from the database.
+     * @param id the unique identifier of the user
+     * @return an Optional containing the User object if found, or empty if not found
+     */
     @Override
     public Optional<User> findById(Long id) {
         User user = null;
@@ -68,6 +74,11 @@ public class UserDaoImpl implements UserDao {
         return Optional.ofNullable(user);
     }
 
+    /**
+     * Saves a new user to the database, generating a new ID for the user.
+     * @param user the User object to be saved
+     * @return the saved User object, including the generated ID
+     */
     @Override
     public User save(User user) {
         String sql = "INSERT INTO users (username, password) VALUES (?, ?) RETURNING id";
@@ -90,25 +101,12 @@ public class UserDaoImpl implements UserDao {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();  // Use this for password hashing
 
-//    @Override
-//    public String login(User user) throws Exception {
-//        User storedUser = findByUsername(user.getUsername());
-//
-//        if (storedUser == null) {
-//            throw new Exception("User not found");
-//        }
-//
-//        // Compare stored hashed password with the password provided by the user
-//        if (!passwordEncoder.matches(user.getPassword(), storedUser.getPassword())) {
-//            throw new Exception("Invalid password");
-//        }
-//
-//        // Generate token
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(storedUser, null, new ArrayList<>());
-//        return jwtTokenProvider.generateToken(authentication);
-//    }
 
-    // Example method to retrieve user details by username
+    /**
+     * Retrieves a user by their username from the database.
+     * @param username the username of the user
+     * @return the User object if found, or null if not found
+     */
     private User findByUsername(String username) {
         User user = null;
         String sql = "SELECT * FROM users WHERE username = ?";

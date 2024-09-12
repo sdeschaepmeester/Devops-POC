@@ -13,8 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class AuthDaoImpl implements AuthDao {
@@ -24,6 +22,12 @@ public class AuthDaoImpl implements AuthDao {
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();  // Use this for password hashing
 
+    /**
+     * Authenticates the user by verifying their credentials and generates a JWT token if valid.
+     * @param user the User object containing login credentials (username and password)
+     * @return a JWT token as a String if authentication is successful
+     * @throws Exception if the user is not found or if the password is invalid
+     */
     @Override
     public String login(User user) throws Exception {
         User storedUser = findByUsername(user.getUsername());
@@ -42,7 +46,11 @@ public class AuthDaoImpl implements AuthDao {
         return jwtTokenProvider.generateToken(authentication);
     }
 
-    // Example method to retrieve user details by username
+    /**
+     * Retrieves a User object by username from the database.
+     * @param username the username of the user to be retrieved
+     * @return the User object corresponding to the provided username, or null if not found
+     */
     private User findByUsername(String username) {
         User user = null;
         String sql = "SELECT * FROM users WHERE username = ?";

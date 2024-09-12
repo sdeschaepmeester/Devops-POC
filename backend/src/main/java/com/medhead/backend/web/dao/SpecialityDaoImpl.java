@@ -14,6 +14,10 @@ import java.util.List;
 @Repository
 public class SpecialityDaoImpl implements SpecialityDao {
 
+    /**
+     * Retrieves a list of all specialities from the database.
+     * @return a list of Speciality objects representing all specialities in the system
+     */
     @Override
     public List<Speciality> findAll() {
         List<Speciality> specialities = new ArrayList<>();
@@ -39,6 +43,11 @@ public class SpecialityDaoImpl implements SpecialityDao {
         return specialities;
     }
 
+    /**
+     * Retrieves a speciality by its unique ID from the database.
+     * @param id the unique identifier of the speciality
+     * @return the Speciality object if found, or null if not found
+     */
     @Override
     public Speciality findById(int id) {
         Speciality speciality = null;

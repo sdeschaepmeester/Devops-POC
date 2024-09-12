@@ -13,6 +13,16 @@ public class JwtTokenFilterConfigured extends SecurityConfigurerAdapter<DefaultS
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    /**
+     * Configures HTTP security for the application, including custom filters.
+     *
+     * This method sets up security configurations by adding a custom JWT token filter to the Spring Security filter chain.
+     * The custom filter is added before the `UsernamePasswordAuthenticationFilter` to ensure it processes requests
+     * before the standard authentication filter.
+     *
+     * @param http the HttpSecurity object used to configure security settings
+     * @throws Exception if an error occurs during security configuration
+     */
     @Override
     public void configure(HttpSecurity http) throws Exception {
         JwtTokenFilter customFilter = new JwtTokenFilter(jwtTokenProvider);

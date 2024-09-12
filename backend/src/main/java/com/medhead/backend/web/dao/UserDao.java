@@ -7,5 +7,4 @@ public interface UserDao {
     List<User> findAll();
     Optional<User> findById(Long id);
     User save(User user);
-    //String login(User user) throws Exception;
 }
