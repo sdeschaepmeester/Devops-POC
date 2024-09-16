@@ -6,13 +6,15 @@ public class Hospital {
     private double latitude;
     private double longitude;
     private String name;
+    private String[] specialities;
 
-    public Hospital(int id, int available_beds, double latitude, double longitude, String name) {
+    public Hospital(int id, int available_beds, double latitude, double longitude, String name, String[] specialities) {
         this.id = id;
         this.available_beds = available_beds;
         this.latitude = latitude;
         this.longitude = longitude;
         this.name = name;
+        this.specialities = specialities;
     }
 
     public int getId() {
@@ -62,5 +64,13 @@ public class Hospital {
                 ", nom='" + name + '\'' +
                 ", beds=" + available_beds +
                 '}';
+    }
+
+    public String[] getSpecialities() {
+        return specialities;
+    }
+
+    public void setSpecialities(String[] specialities) {
+        this.specialities = specialities;
     }
 }

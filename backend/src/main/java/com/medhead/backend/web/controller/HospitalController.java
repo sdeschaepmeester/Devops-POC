@@ -54,7 +54,10 @@ public class HospitalController {
      */
     @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
     @GetMapping("/Hospitals/nearby")
-    public Hospital getHospitalsNearby(@RequestBody double latitude, double longitude, String specialityId) {
+    public List<Hospital> getHospitalsNearby(
+            @RequestParam double latitude,
+            @RequestParam double longitude,
+            @RequestParam String specialityId) {
         return hospitalDao.getHospitalsNearby(latitude, longitude, specialityId);
     }
 }
