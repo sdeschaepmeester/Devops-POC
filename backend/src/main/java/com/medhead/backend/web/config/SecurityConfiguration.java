@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -27,7 +29,7 @@ public class SecurityConfiguration {
      * @param http the HttpSecurity object used to configure security settings
      * @return a configured SecurityFilterChain instance
      * @throws Exception if an error occurs during security configuration
-     * 
+     *
      */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -52,5 +54,10 @@ public class SecurityConfiguration {
         http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new InMemoryUserDetailsManager();  // Empty user in memory
     }
 }
