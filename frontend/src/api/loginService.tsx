@@ -9,8 +9,6 @@ export const login = async (username: string, password: string): Promise<any> =>
             username,
             password
         });
-        console.log('response')
-        console.log(response)
         return response.data;
     } catch (error) {
         throw new Error('Failed to login: ' + error);

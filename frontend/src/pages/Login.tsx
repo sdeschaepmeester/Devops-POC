@@ -12,17 +12,14 @@ const Login = () => {
 
         try {
             const response = await login(username, password);
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem('token', data.token);
-                console.log('cest good '+data)
-                //window.location.href = '/dashboard';
+            if (response.token) {
+                localStorage.setItem('token', response.token);
+                window.location.href = '/';
             } else {
-                setErrorMessage(data.message || 'Login failed');
+                setErrorMessage("L'identifiant ou le mot de passe est incorrect.");
             }
         } catch (error) {
-            setErrorMessage('An error occurred');
+            setErrorMessage("Une erreur s'est produite.");
         }
     };
 
