@@ -27,6 +27,7 @@ public class SecurityConfiguration {
      * @param http the HttpSecurity object used to configure security settings
      * @return a configured SecurityFilterChain instance
      * @throws Exception if an error occurs during security configuration
+     * 
      */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
