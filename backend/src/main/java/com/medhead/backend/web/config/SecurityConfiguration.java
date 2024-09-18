@@ -30,32 +30,24 @@ public class SecurityConfiguration {
      */
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // Configure CORS
         http.cors(cors -> cors
                 .configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
                     corsConfig.setAllowedOrigins(List.of("*"));
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("*"));
                     return corsConfig;
                 })
         );
-
-        // Configure session management
         http.sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
-
-        // Configure authorization
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/Auth/Login").permitAll()
                 .anyRequest().authenticated()
         );
-
-        // Disable CSRF
         http.csrf(csrf -> csrf.disable());
-
-        // Apply JWT filter
         http.addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
