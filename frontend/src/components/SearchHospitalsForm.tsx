@@ -1,37 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import {
-    Box, TextField, MenuItem, Select, FormControl, InputLabel, Button, List, ListItem, CircularProgress,
-    InputAdornment, IconButton, Checkbox, ListItemText
-} from '@mui/material';
 import axios from 'axios';
+import {
+    Box,
+    TextField,
+    InputAdornment,
+    IconButton,
+    CircularProgress,
+    List,
+    ListItem,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    ListItemText,
+    Button
+} from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import { getSpecialities } from '../api/specialitiesService';
 import SpecialityModel from '../models/specialityModel';
+import { getSpecialities } from '../api/specialitiesService';
+import { getHospitalsNearby } from '../api/hospitalsService';
 
 const SearchHospitalsForm: React.FC = () => {
     const [address, setAddress] = useState<string>('');
     const [suggestions, setSuggestions] = useState<string[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [specialities, setSpecialities] = useState<SpecialityModel[]>([]);
-    const [selectedSpecialities, setSelectedSpecialities] = useState<SpecialityModel[]>([]);
+    const [selectedSpeciality, setSelectedSpeciality] = useState<SpecialityModel | null>(null);
 
-    // useEffect(() => {
-    //     const fetchSpecialities = async () => {
-    //         const specialitiesData = await getSpecialities();
-    //         setSpecialities(specialitiesData);
-    //         console.log(specialitiesData)
-    //     };
-    //     fetchSpecialities();
-    // }, []);
+    useEffect(() => {
+        const fetchSpecialities = async () => {
+            try {
+                const specialitiesData = await getSpecialities();
+                setSpecialities(specialitiesData);
+            } catch (error) {
+                console.error('Failed to fetch specialities:', error);
+            }
+        };
+        fetchSpecialities();
+    }, []);
 
-
-    // Select a speciality
-    const handleSpecialityChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-       // setSelectedSpecialities(event.target.value as string[]);
-       
+    const handleSpecialityChange = (event: SelectChangeEvent<string>) => {
+        const value = event.target.value as string;
+        const selectedSpeciality = specialities.find(speciality =>
+            speciality.speciality === value
+        );
+        if (selectedSpeciality) {
+            setSelectedSpeciality(selectedSpeciality);
+        }
     };
 
-    // Detect if we need to call the Nominatim API to fetch corresponding address results
     const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setAddress(value);
@@ -43,16 +61,15 @@ const SearchHospitalsForm: React.FC = () => {
         }
     };
 
-    // Get corresponding UK addresses based on address field content
     const fetchAddressSuggestions = async (query: string) => {
-        suggestions.length === 0 && setLoading(true);
+        setLoading(true);
         try {
             const response = await axios.get('https://nominatim.openstreetmap.org/search', {
                 params: {
                     q: query,
                     format: 'json',
                     addressdetails: 1,
-                    countrycodes: 'gb',
+                    countrycodes: 'fr',
                     limit: 5,
                 },
             });
@@ -60,24 +77,31 @@ const SearchHospitalsForm: React.FC = () => {
             const results = response.data.map((result: any) => result.display_name);
             setSuggestions(results);
         } catch (error) {
-            console.error('Error fetching address suggestions :', error);
             setSuggestions([]);
         } finally {
             setLoading(false);
         }
     };
 
-    // Update address field as the user types in
     const handleSuggestionClick = (suggestion: string) => {
+        console.log(suggestion);
         setAddress(suggestion);
         setSuggestions([]);
     };
 
-    // Delete address fields and suggestions associated
     const clearAddress = () => {
         setAddress('');
         setSuggestions([]);
     };
+
+    const searchHospitals = async () => {
+        if (selectedSpeciality) {
+            //const hospitalsNearby = await getHospitalsNearby(48.8630915, 2.31034709, selectedSpeciality?.speciality);
+            const hospitalsNearby = await getHospitalsNearby(48.8630915, 2.31034709, "Dermatology");
+            console.log('hospitals nearby')
+            console.log(hospitalsNearby)
+        }
+    }
 
     return (
         <Box
@@ -141,21 +165,26 @@ const SearchHospitalsForm: React.FC = () => {
                 </List>
             )}
             <FormControl variant="outlined" fullWidth>
-                <InputLabel id="specialty-label">Sélectionnez les spécialités</InputLabel>
+                <InputLabel id="specialty-label">Sélectionner une spécialité</InputLabel>
                 <Select
                     labelId="specialty-label"
-                    label="Sélectionner les spécialités"
-                    defaultValue=""
+                    label="Sélectionner une spécialité"
+                    value={selectedSpeciality?.speciality || ''}
+                    onChange={handleSpecialityChange}
                 >
-                    {specialities.map((speciality: SpecialityModel, index: number) => (
-                        <MenuItem key={index} value={speciality.speciality}>
-                            <Checkbox checked={selectedSpecialities.indexOf(speciality) > -1} />
-                            <ListItemText primary={`${speciality.speciality_group} - ${speciality.speciality}`} />
+                    {specialities.map((speciality) => (
+                        <MenuItem
+                            key={speciality.id}
+                            value={speciality.speciality}
+                        >
+                            <ListItemText
+                                primary={`${speciality.speciality_group} - ${speciality.speciality}`}
+                            />
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={() => searchHospitals()}>
                 Rechercher
             </Button>
         </Box>

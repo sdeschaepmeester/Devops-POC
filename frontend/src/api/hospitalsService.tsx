@@ -9,7 +9,7 @@ export const getAllHospitals = async (): Promise<HospitalModel[]> => {
         const response = await axios.get<HospitalModel[]>(`${BASE_URL}/Hospitals`);
         return response.data;
     } catch (error) {
-        throw 'Failed to fetch hospitals' + error;
+        throw new Error('Failed to fetch hospitals: ' + (error as Error).message);
     }
 };
 
@@ -19,7 +19,7 @@ export const getHospitalById = async (id: number): Promise<HospitalModel> => {
         const response = await axios.get<HospitalModel>(`${BASE_URL}/Hospitals/${id}`);
         return response.data;
     } catch (error) {
-        throw "Failed to fetch hospital with ID" + error;
+        throw new Error('Failed to fetch hospital by id: ' + (error as Error).message);
     }
 };
 
@@ -29,6 +29,30 @@ export const getHospitalsFiltered = async (params: { [key: string]: any }): Prom
         const response = await axios.get<HospitalModel[]>(`${BASE_URL}/Hospitals`, { params });
         return response.data;
     } catch (error) {
-        throw "Failed to fetch hospitals with parameters" + error;
+        throw new Error('Failed to fetch hospitals with parameters: ' + (error as Error).message);
     }
+};
+
+export const getHospitalsNearby = async (latitude: number, longitude: number, specialityId: string): Promise<HospitalModel[]> => {
+    try {
+        const token = getAuthToken();
+        const response = await axios.get<HospitalModel[]>(`${BASE_URL}/Hospitals/nearby`, {
+            params: {
+                latitude,
+                longitude,
+                specialityId
+            },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token ? `Bearer ${token}` : '',
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Failed to fetch hospitals nearby: ' + (error as Error).message);
+    }
+};
+
+const getAuthToken = (): string | null => {
+    return localStorage.getItem('token');
 };

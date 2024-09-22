@@ -1,46 +1,44 @@
-# Getting Started with Create React App
+# MedHead Backend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
+MedHead Backend is a Java Spring Boot application providing a RESTful API for managing users, hospitals, and specialities. It includes user authentication using JWT and supports various CRUD operations.
 
-## Available Scripts
+## Installation
 
-In the project directory, you can run:
+Follow these steps to install the project:
+1. Clone the project Devops-POC.
+2. Navigate to the frontend folder using ``cd /frontend``
+3. Using a terminal, do the ``npm install`` command to install the dependencies.
+4. In order to try locally the project, do the following command ``npm start``.
+5. The developpement URL is on the 3000 port. 
 
-### `npm start`
+## Debugging locally
+Use the navigator's debugger to debug the project.
+If there's an issue with a backend request, consider using POSTMAN to try the endpoint and determine if the error is from the front-end or the back-end.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Testing
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Follow these steps to test the project:
+TODO
 
-### `npm test`
+## Deployment
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Follow these steps to deploy a new version of the frontend:
+1. Using git, commit and push your updates.
+2. Create a new pull request (to ``main`` or the current sprint's branch).
+3. Once reviewed and merge, the following steps should happened **automatically**, without needing your intervention:
+- Github actions detect there's changes in the frontend folder. (github actions is configured in the workflow.yml in the project's root)
+- Github actions workflow tests and builds the project.
+- If there's no issue, it build a Docker image and pushes it to a dockerhub's container named ``frontend``.
 
-### `npm run build`
+> **Information**
+>
+> These steps should take a few minutes. Verify the progress on Github's Actions section.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. Verify that the Dockerhub image has been updated.
+![dockerhub](https://zupimages.net/up/24/37/ud8t.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. The Heroku container should be updated automatically. You don't need to do anything else by hand.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![heroku](https://zupimages.net/up/24/37/z0sh.png)
