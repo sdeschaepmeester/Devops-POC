@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Container, Modal, Box, IconButton } from '@mui/material';
-import SearchHospitalsForm from '../components/SearchHospitalsForm';
-import logo from '../assets/logo.png';
+import React from 'react';
+import { Typography, Modal, Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 const modalStyle = {

@@ -4,22 +4,14 @@ import { AppBar, Toolbar, Typography, Button, Container, Modal, Box } from '@mui
 import SearchHospitalsForm from '../components/SearchHospitalsForm';
 import logo from '../assets/logo.png';
 import InstructionsModal from '../components/InstructionsModal';
-
-const modalStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
+import HospitalModel from '../models/hospitalModel';
+import HospitalsList from '../components/HospitalsList';
 
 const Hospital: React.FC = () => {
     const navigate = useNavigate();
     const [openModal, setOpenModal] = useState(false);
+    const [hospitals, setHospitals] = useState<HospitalModel[]>([]);
+    const [displayResults, setDisplayResults] = useState(false);
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
@@ -31,6 +23,15 @@ const Hospital: React.FC = () => {
             navigate('/connexion', { replace: true });
         }, 1000);
     };
+
+    const retrieveHospitals = (hospitals: HospitalModel[]) => {
+        setHospitals(hospitals);
+        setDisplayResults(true);
+    };
+
+    const goBack = () => {
+        setDisplayResults(false);
+    }
 
     return (
         <>
@@ -58,11 +59,11 @@ const Hospital: React.FC = () => {
 
             <Button
                 sx={{
-                    bgcolor: '#2a6885', // Couleur de fond bleu
-                    color: 'white', // Couleur du texte blanche
+                    bgcolor: '#2a6885',
+                    color: 'white',
                     marginTop: '10px',
                     marginLeft: '10px',
-                    borderRadius: '5px', // Bords arrondis
+                    borderRadius: '5px',
                     '&:hover': {
                         bgcolor: '#4b8dab'
                     },
@@ -71,8 +72,23 @@ const Hospital: React.FC = () => {
             >
                 Aide au fonctionnement
             </Button>
-
-
+            {displayResults &&
+                <Button
+                    sx={{
+                        bgcolor: '#2a6885',
+                        color: 'white',
+                        marginTop: '10px',
+                        marginLeft: '10px',
+                        borderRadius: '5px',
+                        '&:hover': {
+                            bgcolor: '#4b8dab'
+                        },
+                    }}
+                    onClick={goBack}
+                >
+                    Revenir à la recherche
+                </Button>
+            }
             <Container
                 style={{
                     height: '100vh',
@@ -81,10 +97,12 @@ const Hospital: React.FC = () => {
                     alignItems: 'center',
                 }}
             >
-
-                <SearchHospitalsForm />
+                {displayResults ?
+                    <HospitalsList hospitals={hospitals} />
+                    :
+                    <SearchHospitalsForm retrieveHospitals={retrieveHospitals} />
+                }
             </Container>
-
             <InstructionsModal open={openModal} onClose={handleClose} />
         </>
     );

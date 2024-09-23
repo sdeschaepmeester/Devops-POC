@@ -4,6 +4,7 @@ import { Box, TextField, CircularProgress, List, ListItem, FormControl, InputLab
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { getSpecialities } from '../api/specialitiesService';
 import { getHospitalsNearby } from '../api/hospitalsService';
+import HospitalModel from '../models/hospitalModel';
 
 interface SpecialityModel {
     id: number;
@@ -17,7 +18,11 @@ interface AddressSuggestion {
     lon: string;
 }
 
-const SearchHospitalsForm: React.FC = () => {
+interface HospitalsProps {
+    retrieveHospitals: (hospitals: HospitalModel[]) => void;
+}
+
+const SearchHospitalsForm: React.FC<HospitalsProps> = ({ retrieveHospitals }) => {
     const [address, setAddress] = useState<string>('');
     const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -46,7 +51,6 @@ const SearchHospitalsForm: React.FC = () => {
     };
 
     const fetchAddressSuggestions = async (query: string) => {
-        setLoading(true);
         try {
             const response = await axios.get('https://nominatim.openstreetmap.org/search', {
                 params: {
@@ -67,8 +71,6 @@ const SearchHospitalsForm: React.FC = () => {
             setSuggestions(results);
         } catch (error) {
             setSuggestions([]);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -86,10 +88,12 @@ const SearchHospitalsForm: React.FC = () => {
 
     const searchHospitals = async () => {
         if (selectedSpeciality && selectedAddress) {
+            setLoading(true);
             const latitude = parseFloat(selectedAddress.lat);
             const longitude = parseFloat(selectedAddress.lon);
             const hospitalsNearby = await getHospitalsNearby(latitude, longitude, selectedSpeciality.speciality);
-            console.log('Hospitals Nearby:', hospitalsNearby);
+            retrieveHospitals(hospitalsNearby);
+            setLoading(false);
         } else {
             alert('Veuillez sélectionner une adresse valide et une choisir une spécialité.');
         }
@@ -180,8 +184,8 @@ const SearchHospitalsForm: React.FC = () => {
                     ))}
                 </Select>
             </FormControl>
-            <Button variant="contained" color="primary" onClick={searchHospitals} disabled={!selectedAddress}>
-                Rechercher
+            <Button variant="contained" color="primary" onClick={searchHospitals} disabled={!selectedAddress || !selectedSpeciality || loading}>
+                {loading ? "Chargement..." : "Rechercher"}
             </Button>
         </Box>
     );
