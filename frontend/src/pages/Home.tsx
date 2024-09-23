@@ -1,53 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, AppBar, Toolbar, Typography, Button } from '@mui/material';
-import SearchHospitalsForm from '../components/SearchHospitalsForm';
-import logo from '../assets/logo.png';
+import { jwtDecode } from "jwt-decode";
+import Hospital from './Hospital';
+import Login from './Login';
+
+interface DecodedToken {
+    exp: number;
+}
 
 const Home: React.FC = () => {
     const navigate = useNavigate();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    const handleLogout = () => {
-      localStorage.removeItem('token');
-      setTimeout(() => {
-        navigate('/connexion', { replace: true });
-      }, 1000);
-    };
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (token) {
+            try {
+                const decodedToken: DecodedToken = jwtDecode<DecodedToken>(token);
+                const currentTime = Date.now() / 1000;
+
+                if (decodedToken.exp < currentTime) {
+                    localStorage.removeItem('token');
+                    setIsAuthenticated(false);
+                    navigate('/connexion');
+                } else {
+                    setIsAuthenticated(true);
+                    navigate('/dashboard');
+                }
+            } catch (error) {
+                localStorage.removeItem('token');
+                setIsAuthenticated(false);
+                navigate('/connexion');
+            }
+        } else {
+            setIsAuthenticated(false);
+            navigate('/connexion');
+        }
+    }, [navigate]);
 
     return (
         <>
-            <AppBar position="static">
-                <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img
-                            src={logo}
-                            alt="Logo"
-                            style={{ height: '40px', marginRight: '10px' }}
-                        />
-                        <Typography variant="h6">
-                            Medhead - Recherche d'hôpitaux
-                        </Typography>
-                    </div>
-                    <Button
-                        color="inherit"
-                        onClick={handleLogout}
-                        style={{ marginLeft: 'auto' }}
-                    >
-                        Déconnexion
-                    </Button>
-                </Toolbar>
-            </AppBar>
-
-            <Container
-                style={{
-                    height: '100vh',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <SearchHospitalsForm />
-            </Container>
+        {isAuthenticated ?
+            <Hospital />
+            :
+            <Login />
+        }
         </>
     );
 };

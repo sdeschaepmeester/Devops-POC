@@ -1,32 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-    Box,
-    TextField,
-    InputAdornment,
-    IconButton,
-    CircularProgress,
-    List,
-    ListItem,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    ListItemText,
-    Button
-} from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
+import { Box, TextField, CircularProgress, List, ListItem, FormControl, InputLabel, Select, MenuItem, ListItemText, Button, IconButton, InputAdornment, SelectChangeEvent } from '@mui/material';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-import SpecialityModel from '../models/specialityModel';
 import { getSpecialities } from '../api/specialitiesService';
 import { getHospitalsNearby } from '../api/hospitalsService';
 
+interface SpecialityModel {
+    id: number;
+    speciality: string;
+    speciality_group: string;
+}
+
+interface AddressSuggestion {
+    display_name: string;
+    lat: string;
+    lon: string;
+}
+
 const SearchHospitalsForm: React.FC = () => {
     const [address, setAddress] = useState<string>('');
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [suggestions, setSuggestions] = useState<AddressSuggestion[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [specialities, setSpecialities] = useState<SpecialityModel[]>([]);
     const [selectedSpeciality, setSelectedSpeciality] = useState<SpecialityModel | null>(null);
+    const [selectedAddress, setSelectedAddress] = useState<AddressSuggestion | null>(null);
 
     useEffect(() => {
         const fetchSpecialities = async () => {
@@ -42,22 +39,9 @@ const SearchHospitalsForm: React.FC = () => {
 
     const handleSpecialityChange = (event: SelectChangeEvent<string>) => {
         const value = event.target.value as string;
-        const selectedSpeciality = specialities.find(speciality =>
-            speciality.speciality === value
-        );
+        const selectedSpeciality = specialities.find(speciality => speciality.speciality === value);
         if (selectedSpeciality) {
             setSelectedSpeciality(selectedSpeciality);
-        }
-    };
-
-    const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        setAddress(value);
-
-        if (value.length >= 5) {
-            fetchAddressSuggestions(value);
-        } else {
-            setSuggestions([]);
         }
     };
 
@@ -74,7 +58,12 @@ const SearchHospitalsForm: React.FC = () => {
                 },
             });
 
-            const results = response.data.map((result: any) => result.display_name);
+            const results = response.data.map((result: any) => ({
+                display_name: result.display_name,
+                lat: result.lat,
+                lon: result.lon,
+            }));
+
             setSuggestions(results);
         } catch (error) {
             setSuggestions([]);
@@ -83,25 +72,28 @@ const SearchHospitalsForm: React.FC = () => {
         }
     };
 
-    const handleSuggestionClick = (suggestion: string) => {
-        console.log(suggestion);
-        setAddress(suggestion);
+    const handleSuggestionClick = (suggestion: AddressSuggestion) => {
+        setAddress(suggestion.display_name);
+        setSelectedAddress(suggestion);
         setSuggestions([]);
     };
 
     const clearAddress = () => {
         setAddress('');
+        setSelectedAddress(null);
         setSuggestions([]);
     };
 
     const searchHospitals = async () => {
-        if (selectedSpeciality) {
-            //const hospitalsNearby = await getHospitalsNearby(48.8630915, 2.31034709, selectedSpeciality?.speciality);
-            const hospitalsNearby = await getHospitalsNearby(48.8630915, 2.31034709, "Dermatology");
-            console.log('hospitals nearby')
-            console.log(hospitalsNearby)
+        if (selectedSpeciality && selectedAddress) {
+            const latitude = parseFloat(selectedAddress.lat);
+            const longitude = parseFloat(selectedAddress.lon);
+            const hospitalsNearby = await getHospitalsNearby(latitude, longitude, selectedSpeciality.speciality);
+            console.log('Hospitals Nearby:', hospitalsNearby);
+        } else {
+            alert('Veuillez sélectionner une adresse valide et une choisir une spécialité.');
         }
-    }
+    };
 
     return (
         <Box
@@ -109,28 +101,37 @@ const SearchHospitalsForm: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '20px',
-                width: '100%',
-                maxWidth: '500px',
+                width: '70%',
+                maxWidth: '1000px',
                 padding: '20px',
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                borderRadius: '8px'
+                borderRadius: '8px',
+                margin: '0 auto',
+                minHeight: '200px',
+                justifyContent: 'center'
             }}
         >
+
             <TextField
                 label="Entrez votre adresse"
                 variant="outlined"
                 fullWidth
                 value={address}
-                onChange={handleAddressChange}
+                onChange={(e) => setAddress(e.target.value)}
                 InputProps={{
                     endAdornment: (
-                        address && (
+                        <>
+                            {address && (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={clearAddress}>
+                                        <DeleteOutlineIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            )}
                             <InputAdornment position="end">
-                                <IconButton onClick={clearAddress}>
-                                    <DeleteOutlineIcon />
-                                </IconButton>
+                                <Button onClick={() => fetchAddressSuggestions(address)}>Trouver l'adresse</Button>
                             </InputAdornment>
-                        )
+                        </>
                     ),
                 }}
             />
@@ -159,7 +160,7 @@ const SearchHospitalsForm: React.FC = () => {
                             onMouseOver={(e) => (e.currentTarget.style.backgroundColor = '#f0f0f0')}
                             onMouseOut={(e) => (e.currentTarget.style.backgroundColor = 'white')}
                         >
-                            {suggestion}
+                            {suggestion.display_name}
                         </ListItem>
                     ))}
                 </List>
@@ -173,18 +174,13 @@ const SearchHospitalsForm: React.FC = () => {
                     onChange={handleSpecialityChange}
                 >
                     {specialities.map((speciality) => (
-                        <MenuItem
-                            key={speciality.id}
-                            value={speciality.speciality}
-                        >
-                            <ListItemText
-                                primary={`${speciality.speciality_group} - ${speciality.speciality}`}
-                            />
+                        <MenuItem key={speciality.id} value={speciality.speciality}>
+                            <ListItemText primary={`${speciality.speciality_group} - ${speciality.speciality}`} />
                         </MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <Button variant="contained" color="primary" onClick={() => searchHospitals()}>
+            <Button variant="contained" color="primary" onClick={searchHospitals} disabled={!selectedAddress}>
                 Rechercher
             </Button>
         </Box>
