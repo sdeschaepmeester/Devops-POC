@@ -14,7 +14,7 @@ const HospitalsList: React.FC<HospitalsListProps> = ({ hospitals }) => {
     }
 
     const reserveBed = () => {
-        if(selectedHospital){
+        if (selectedHospital) {
             console.log('reserve un lit')
         }
     }
@@ -24,49 +24,55 @@ const HospitalsList: React.FC<HospitalsListProps> = ({ hospitals }) => {
             <Typography variant="h6" component="h2" sx={{ mb: 2 }}>
                 Liste des hôpitaux proches correspondants à votre recherche :
             </Typography>
-            <Card sx={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: 2, padding: 2 }}>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
-                    {hospitals.map((hospital) => (
-                        <Card
-                            key={hospital.id}
-                            sx={{
-                                boxShadow: 2,
-                                borderRadius: '8px',
-                                flex: '1 1 calc(25% - 16px)',
-                                '&:hover': {
-                                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
-                                },
-                                cursor: 'pointer'
-                            }}
-                            onClick={() => selectHospital(hospital)}
+            {hospitals.length === 0 ? (
+                <Typography>
+                    Il n'y a pas d'hôpitaux disponibles correspondants à votre recherche...
+                </Typography>
+            ) : (
+                <Card sx={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: 2, padding: 2 }}>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                        {hospitals.map((hospital) => (
+                            <Card
+                                key={hospital.id}
+                                sx={{
+                                    boxShadow: 2,
+                                    borderRadius: '8px',
+                                    flex: '1 1 calc(25% - 16px)',
+                                    '&:hover': {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                                    },
+                                    cursor: 'pointer',
+                                }}
+                                onClick={() => selectHospital(hospital)}
+                            >
+                                <CardContent>
+                                    <Typography variant="h6" component="div">
+                                        {hospital.name}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                        Lits disponibles : {hospital.available_beds}
+                                    </Typography>
+                                    <Typography color="text.secondary">
+                                        Coordonnées : {hospital.latitude}, {hospital.longitude}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => reserveBed()}
+                            disabled={!selectedHospital}
                         >
-                            <CardContent>
-                                <Typography variant="h6" component="div">
-                                    {hospital.name}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                    Lits disponibles : {hospital.available_beds}
-                                </Typography>
-                                <Typography color="text.secondary">
-                                    Coordonnées : {hospital.latitude}, {hospital.longitude}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => reserveBed()}
-                        disabled={!selectedHospital}
-                    >
-                        Réserver un lit
-                    </Button>
-                </Box>
-            </Card>
+                            Réserver un lit
+                        </Button>
+                    </Box>
+                </Card>
+            )}
         </Box>
-    );
+    );    
 };
 
 

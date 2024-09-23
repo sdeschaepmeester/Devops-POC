@@ -60,4 +60,15 @@ public class HospitalController {
             @RequestParam String specialityId) {
         return hospitalDao.getHospitalsNearby(latitude, longitude, specialityId);
     }
+
+    /**
+     * Reserves a bed in the specified hospital.
+     * @param id the ID of the hospital where the bed will be reserved
+     * @return true if the reservation was successful, false otherwise
+     */
+    @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
+    @PostMapping("/Hospitals/{id}/reserve")
+    public boolean reserveHospital(@PathVariable int id) {
+        return hospitalDao.reserveHospital(id);
+    }
 }

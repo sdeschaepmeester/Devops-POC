@@ -172,4 +172,43 @@ public class HospitalDaoImpl implements HospitalDao {
         return nearestHospitals;
     }
 
+    /**
+     * Reserves a bed in the specified hospital by updating the available beds count.
+     *
+     * @param hospitalId the ID of the hospital where the bed will be reserved
+     * @return true if the reservation was successful, false if no beds are available or an error occurs
+     */
+    @Override
+    public boolean reserveHospital(int hospitalId) {
+        String selectSql = "SELECT available_beds FROM hospitals WHERE id = ?";
+        String updateSql = "UPDATE hospitals SET available_beds = ? WHERE id = ?";
+
+        try (Connection conn = DatabaseConfig.getConnection();
+             PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+             PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+
+            selectStmt.setInt(1, hospitalId);
+            ResultSet rs = selectStmt.executeQuery();
+
+            if (rs.next()) {
+                int availableBeds = rs.getInt("available_beds");
+
+                if (availableBeds > 0) {
+                    updateStmt.setInt(1, availableBeds - 1);
+                    updateStmt.setInt(2, hospitalId);
+
+                    updateStmt.executeUpdate();
+
+                    return true;
+                } else {
+                    System.out.println("Aucun lit disponible.");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
