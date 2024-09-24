@@ -33,6 +33,7 @@ export const getHospitalsFiltered = async (params: { [key: string]: any }): Prom
     }
 };
 
+// Get hospitals nearby location with selected speciality
 export const getHospitalsNearby = async (latitude: number, longitude: number, specialityId: string): Promise<HospitalModel[]> => {
     try {
         const token = getAuthToken();
@@ -50,6 +51,22 @@ export const getHospitalsNearby = async (latitude: number, longitude: number, sp
         return response.data;
     } catch (error) {
         throw new Error('Failed to fetch hospitals nearby: ' + (error as Error).message);
+    }
+};
+
+// Reserve an hospital bed
+export const reserveHospitalBed = async (hospitalId: number): Promise<any> => {
+    try {
+        const token = getAuthToken();
+        const response = await axios.post<any>(`${BASE_URL}/Hospitals/${hospitalId}/reserve`, null, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': token ? `Bearer ${token}` : '',
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Failed to reserve a bed: ' + (error as Error).message);
     }
 };
 

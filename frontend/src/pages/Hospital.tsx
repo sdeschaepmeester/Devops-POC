@@ -19,7 +19,6 @@ const Hospital: React.FC = () => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         setTimeout(() => {
-            console.log('navigate')
             navigate('/connexion', { replace: true });
         }, 1000);
     };
@@ -98,7 +97,7 @@ const Hospital: React.FC = () => {
                 }}
             >
                 {displayResults ?
-                    <HospitalsList hospitals={hospitals} />
+                    <HospitalsList hospitals={hospitals} goBack={goBack}/>
                     :
                     <SearchHospitalsForm retrieveHospitals={retrieveHospitals} />
                 }

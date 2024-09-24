@@ -1,9 +1,19 @@
 # MedHead Backend
 
 ## Description
+
 MedHead Backend is a Java Spring Boot application providing a RESTful API for managing users, hospitals, and specialities. It includes user authentication using JWT and supports various CRUD operations.
 
 ## Installation
+
+### Prerequisites
+
+See below the list of prerequisites to ensure the good functionning of the backend project:
+- Have **Java Development Kit (JDK) 22**, download it from Oracle or OpenJDK.
+- Have **Apache Maven**, Maven needs to be installed to manage project dependencies and building. You can install it via Maven downloads.
+- Have **IntelliJ** or another IDE to develop, run, and debug the project. Ensure it's properly configured for Maven and Spring Boot development.
+
+### Install and run the project
 
 Follow these steps to install the project:
 1. Clone the project Devops-POC.
@@ -13,6 +23,7 @@ Follow these steps to install the project:
 5. Try the different endpoints on POSTMAN. 
 
 ## Debugging locally
+
 As said previously, in order to test the different endpoints you will need to try them in POSTMAN.
 You can import the existing collection from the project's root ``postman`` folder.
 There should be two collections: 
@@ -73,3 +84,15 @@ The API's new version should be up after a moment.
 You can check this on Heroku.
 
 ![heroku](https://zupimages.net/up/24/37/z0sh.png)
+
+## Functionnalities
+
+This project should allow you to try the different services:
+- **Hospitals**: Manage hospitals; fetch all hospitals, fetch a specific hospital by id, fetch nearby hospitals, reserve an hospital's bed.
+- **Users**: Manage users; fetch all users, fetch a specific user by id.
+- **Auth**: Allow you to generate a JWT token with the login endpoint.
+- **Specialities**: Manage specialities; fetch all specialities, fetch a specific speciality.
+
+> Warning
+>
+> The address entered must be a **french** address, as I have configured the OpenstreetMap API to fetch french addresses only in its parameters.
