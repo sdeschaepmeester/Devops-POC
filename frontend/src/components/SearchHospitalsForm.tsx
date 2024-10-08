@@ -118,6 +118,7 @@ const SearchHospitalsForm: React.FC<HospitalsProps> = ({ retrieveHospitals }) =>
 
             <TextField
                 label="Entrez votre adresse"
+                name="enterAddress"
                 variant="outlined"
                 fullWidth
                 value={address}
@@ -133,7 +134,7 @@ const SearchHospitalsForm: React.FC<HospitalsProps> = ({ retrieveHospitals }) =>
                                 </InputAdornment>
                             )}
                             <InputAdornment position="end">
-                                <Button onClick={() => fetchAddressSuggestions(address)}>Trouver l'adresse</Button>
+                                <Button onClick={() => fetchAddressSuggestions(address)} id="findAddressBtn">Trouver l'adresse</Button>
                             </InputAdornment>
                         </>
                     ),
@@ -169,7 +170,7 @@ const SearchHospitalsForm: React.FC<HospitalsProps> = ({ retrieveHospitals }) =>
                     ))}
                 </List>
             )}
-            <FormControl variant="outlined" fullWidth>
+            <FormControl id="selectSpecialityBtn" variant="outlined" fullWidth>
                 <InputLabel id="specialty-label">Sélectionner une spécialité</InputLabel>
                 <Select
                     labelId="specialty-label"
@@ -184,7 +185,7 @@ const SearchHospitalsForm: React.FC<HospitalsProps> = ({ retrieveHospitals }) =>
                     ))}
                 </Select>
             </FormControl>
-            <Button variant="contained" color="primary" onClick={searchHospitals} disabled={!selectedAddress || !selectedSpeciality || loading}>
+            <Button id="searchBtn" variant="contained" color="primary" onClick={searchHospitals} disabled={!selectedAddress || !selectedSpeciality || loading}>
                 {loading ? "Chargement..." : "Rechercher"}
             </Button>
         </Box>

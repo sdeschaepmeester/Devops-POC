@@ -50,10 +50,11 @@ const HospitalsList: React.FC<HospitalsListProps> = ({ hospitals, goBack }) => {
                     Il n'y a pas d'hôpitaux disponibles correspondants à votre recherche...
                 </Typography>
             ) : (
-                <Card sx={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: 2, padding: 2 }}>
+                <Card id="hospitalCardContainer" sx={{ backgroundColor: 'white', borderRadius: '8px', boxShadow: 2, padding: 2 }}>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                         {hospitals.map((hospital) => (
                             <Card
+                                data-testid={`hospitalCard${hospital.id}`}
                                 key={hospital.id}
                                 sx={{
                                     boxShadow: 2,
@@ -84,6 +85,7 @@ const HospitalsList: React.FC<HospitalsListProps> = ({ hospitals, goBack }) => {
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
                         <Button
+                            id="reserveBedBtn"
                             variant="contained"
                             color="primary"
                             onClick={() => reserveBed()}

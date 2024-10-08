@@ -5,21 +5,26 @@ import { login } from '../api/loginService';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
+            setLoading(true);
             const response = await login(username, password);
             if (response.token) {
                 localStorage.setItem('token', response.token);
                 window.location.href = '/';
+                setLoading(false);
             } else {
                 setErrorMessage("L'identifiant ou le mot de passe est incorrect.");
+                setLoading(false);
             }
         } catch (error) {
             setErrorMessage("Une erreur s'est produite.");
+            setLoading(false);
         }
     };
 
@@ -60,6 +65,7 @@ const Login = () => {
                         <TextField
                             fullWidth
                             label="Nom d'utilisateur"
+                            name="username"
                             variant="outlined"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
@@ -71,6 +77,7 @@ const Login = () => {
                         <TextField
                             fullWidth
                             label="Mot de passe"
+                            name="password"
                             type="password"
                             variant="outlined"
                             value={password}
@@ -90,8 +97,9 @@ const Login = () => {
                                 opacity: 0.9,
                             },
                         }}
+                        disabled={loading}
                     >
-                        Se connecter
+                        {loading ? "Chargement..." : "Se connecter"}
                     </Button>
                 </form>
             </Paper>

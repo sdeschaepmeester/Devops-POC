@@ -48,6 +48,24 @@ Note that every request that requires a parameter or a body has an example attac
 
 Follow these steps to test the project:
 TODO
+## Locally testing
+
+We use Cypress in this project.
+There's an E2E test written for the frontend which is in the following file: ``frontend/cypress/e2e/spec.cy.ts``
+
+Do the following commands to try the test locally:
+1. Make sure the backend is running.
+2. Make sure the frontend is running with the command ``npm start``.
+3. Open another terminal in the frontend and enter the command ``npx cypress open``.
+
+-> A new window should open. Click on E2E Testing and choose a navigator (eg: Chrome). 
+
+![img](https://zupimages.net/up/24/40/uyiu.png)
+
+4. Click on the section ``specs`` and select the file ``spec.cy.ts``.
+You should see the test running.
+
+![img](https://zupimages.net/up/24/40/apfr.png)
 
 ## Deployment
 
