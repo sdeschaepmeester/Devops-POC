@@ -103,7 +103,7 @@ public class HospitalControllerTest {
         // Failed reservation
         when(hospitalDao.reserveHospital(-99)).thenReturn(false);
 
-        mockMvc.perform(post("/Hospitals/{id}/reserve", 2)
+        mockMvc.perform(post("/Hospitals/{id}/reserve", -99)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }

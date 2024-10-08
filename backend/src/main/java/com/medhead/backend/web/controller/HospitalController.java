@@ -1,6 +1,7 @@
 package com.medhead.backend.web.controller;
 import com.medhead.backend.web.dao.HospitalDao;
 import com.medhead.backend.model.Hospital;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -68,7 +69,13 @@ public class HospitalController {
      */
     @CrossOrigin(origins = "https://medhead-frontend-9f97491cebce.herokuapp.com")
     @PostMapping("/Hospitals/{id}/reserve")
-    public boolean reserveHospital(@PathVariable int id) {
-        return hospitalDao.reserveHospital(id);
+    public ResponseEntity<String> reserveHospital(@PathVariable int id) {
+        boolean success = hospitalDao.reserveHospital(id);
+
+        if (success) {
+            return ResponseEntity.ok("Reservation successful");
+        } else {
+            return ResponseEntity.badRequest().body("Could not reserve a bed: hospital not found or no available beds.");
+        }
     }
 }
