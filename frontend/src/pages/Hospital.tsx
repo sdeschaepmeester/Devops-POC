@@ -38,6 +38,7 @@ const Hospital: React.FC = () => {
                 <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                         <img
+                            onClick={() => navigate('/')}
                             src={logo}
                             alt="Logo"
                             style={{ height: '40px', marginRight: '10px' }}
@@ -97,7 +98,7 @@ const Hospital: React.FC = () => {
                 }}
             >
                 {displayResults ?
-                    <HospitalsList hospitals={hospitals} goBack={goBack}/>
+                    <HospitalsList hospitals={hospitals} goBack={goBack} />
                     :
                     <SearchHospitalsForm retrieveHospitals={retrieveHospitals} />
                 }
