@@ -201,12 +201,13 @@ public class HospitalDaoImpl implements HospitalDao {
 
                     return true;
                 } else {
-                    System.out.println("Aucun lit disponible.");
+                    return false;
                 }
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
         return false;
     }

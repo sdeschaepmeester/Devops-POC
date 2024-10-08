@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import java.util.Optional;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,6 +86,26 @@ public class HospitalControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Hôpital Simone Veil"))
                 .andExpect(jsonPath("$.id").value(2));
+    }
+
+    @Test
+    public void testReserveHospital_Success() throws Exception {
+        // Successful reservation
+        when(hospitalDao.reserveHospital(2)).thenReturn(true);
+
+        mockMvc.perform(post("/Hospitals/{id}/reserve", 2)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testReserveHospital_Failure() throws Exception {
+        // Failed reservation
+        when(hospitalDao.reserveHospital(-99)).thenReturn(false);
+
+        mockMvc.perform(post("/Hospitals/{id}/reserve", 2)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
     }
 
 }
