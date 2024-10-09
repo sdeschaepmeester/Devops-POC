@@ -35,11 +35,21 @@ Note that every request that requires a parameter or a body has an example attac
 
 ## Testing
 
+**Types of tests**
 There are different types of test implemented for the backend:
 - E2E (End to End) Test
 - Unit tests
 - Integration tests
+- Stress Testing
 
+**Technology**
+This project uses the following technologies / libraries for the tests:
+- Unit tests: **JUnit**
+- Integration tests: **JUnit**
+- E2E test: **POSTMAN**
+- Stress test: **JMeter**
+
+**Automation**
 The unit tests and integration tests are runned automatically in the pipeline thanks to this code in the workflow.yml:
 ``
  - name: Run unit and integration tests with Maven
@@ -106,6 +116,31 @@ To create an run manually the unit tests, do the following:
 ![img](https://zupimages.net/up/24/41/sijm.png)
 
 There are currently 3 integration test controllers which contains one or several tests: Hospital and Speciality.
+
+### Running the stess test
+A stress test evaluates how a system performs under extreme or peak conditions, such as high load or resource limitations, to determine its stability and robustness.
+
+To do the stress test, we need to use JMeter.
+
+Prerequisites: 
+- Download [JMeter online](https://jmeter.apache.org/download_jmeter.cgi)
+- Download the stress test plan inside the ``/jmeter`` folder named ``JMETER_Stress_Test_Plan.jmx``.
+- Make sure the backend is running locally on the 8080 port !
+
+Follow these step to run the stress test:
+1. Run the JMeter JAR file (or open it another way).
+2. Click on **File** -> **Open** and select the stress test plan.
+3. There should be three tests. Make sure only one is activated at a time by **right clicking it -> Activate**
+![img](https://zupimages.net/up/24/41/7s31.png)
+4. To run the stress plan, select the test and clicks the green arrow.
+![img](https://zupimages.net/up/24/41/d0jv.png)
+5. Click on **Arbre de résultats** to see the results
+![img](https://zupimages.net/up/24/41/8xvg.png)
+
+For this example, the Tests stress run have the following properties:
+- Users: 950
+- Montée en charge: 10
+- Iteration: 1
 
 ## Deployment
 
