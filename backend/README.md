@@ -2,7 +2,7 @@
 
 ## Description
 
-MedHead Backend is a Java Spring Boot application providing a RESTful API for managing users, hospitals, and specialities. It includes user authentication using JWT and supports various CRUD operations.
+MedHead Backend is a Java application using Springboot and Maven providing a RESTful API for managing users, hospitals, and hospitals specialities. It includes user authentication using JWT and supports various CRUD operations.
 
 ## Installation
 
@@ -11,7 +11,7 @@ MedHead Backend is a Java Spring Boot application providing a RESTful API for ma
 See below the list of prerequisites to ensure the good functionning of the backend project:
 - Have **Java Development Kit (JDK) 22**, download it from Oracle or OpenJDK.
 - Have **Apache Maven**, Maven needs to be installed to manage project dependencies and building. You can install it via Maven downloads.
-- Have **IntelliJ** or another IDE to develop, run, and debug the project. Ensure it's properly configured for Maven and Spring Boot development.
+- Have **IntelliJ** or another IDE to develop, run, and debug the project. Ensure it's properly configured for Maven and Spring Boot development and for the correct java version.
 
 ### Install and run the project
 
@@ -20,23 +20,92 @@ Follow these steps to install the project:
 2. Navigate to the backend folder using ``cd /backend``
 3. Using IntelliJ, do the ``maven compile`` and ``maven install`` commands.
 4. In order to try locally the project, select ``target/backendMedhead-0.0.1-SNAPSHOT``. Right click on it and select ``Run``.
-5. Try the different endpoints on POSTMAN. 
+5. Try the different endpoints using **POSTMAN**. 
 
 ## Debugging locally
 
-As said previously, in order to test the different endpoints you will need to try them in POSTMAN.
+As said previously, in order to test the different endpoints you will need to try them in **POSTMAN**.
 You can import the existing collection from the project's root ``postman`` folder.
 There should be two collections: 
-- DEV.postman_collection for debugging endpoints from DEV environment.
-- PROD.postman_collection for debugging endpoints from PROD environment.
+- ``DEV.postman_collection`` for debugging endpoints from DEV environment.
+- ``PROD.postman_collection`` for debugging endpoints from PROD environment.
 
 Note that every request that requires a parameter or a body has an example attached.
 ![expostman](https://zupimages.net/up/24/37/w8su.png)
 
 ## Testing
 
-Follow these steps to test the project:
-TODO
+There are different types of test implemented for the backend:
+- E2E (End to End) Test
+- Unit tests
+- Integration tests
+
+The unit tests and integration tests are runned automatically in the pipeline thanks to this code in the workflow.yml:
+``
+ - name: Run unit and integration tests with Maven
+   run: |
+      cd backend
+      mvn clean test
+``
+
+### Running the E2E Test 
+
+The End to End test is a compilation of requests sent to the API to simulate a user's actions.
+
+Here are the steps in order to run the E2E test created for the backend:
+
+Prerequisites:
+- Download the Postman collection available in the ``/postman`` folder under the name ``TESTE2E.postman_collection.json``.
+- Download the Postman environment available in the ``/postman`` folder under the name ``TESTE2E.postman_environment.json``.
+
+1. Open POSTMAN and click on the **Collections** button in the left sidebar menu.
+2. Click on the **Environment** button in the left sidebar menu.
+3. Click on the **Import** button and drop the JSON file ``TESTE2E.postman_environment.json``.
+4. Click on the **Environment** button in the top bar and select the correct Test environement.
+![img](https://zupimages.net/up/24/41/vuvy.png)
+5. Click on the **Import** button and drop the JSON file ``TESTE2E.postman_collection.json``.
+6. Click on the **...** button next to the collection and click on **Run collection**.
+![img](https://zupimages.net/up/24/41/vlg1.png)
+* You should see the details of the collection
+7. Click on **Run Test E2E - Hopitaux**
+![img](https://zupimages.net/up/24/41/ggcp.png)
+* You should see the tests results.
+![img](https://zupimages.net/up/24/41/809l.png)
+
+The current E2E test does the following:
+- Authenticate
+- Fetch specialities list (shown on the frontend)
+- Fetch hospitals nearby using a coordinate and the last query's selected speciality.
+- Reserve an hospital bed using the last query's selected hospital.
+- Get hospital by ID.
+
+### Running the unit Tests
+
+The unit tests are a type of software testing that verifies the functionality of individual components or units of code such as functions or methods to ensure they work as expected.
+
+To create an run manually the unit tests, do the following: 
+1. Create a new java file inside the ``test/java/com/medhead/backend/web/controller`` folder.
+![img](https://zupimages.net/up/24/41/s4jf.png)
+2. Run all the tests using the **Maven test** command from the IDE or run the ``mvn test`` command.
+![img](https://zupimages.net/up/24/41/6z6t.png)
+3. You should see the results in the terminal
+![img](https://zupimages.net/up/24/41/sijm.png)
+
+There are currently 3 unit test controllers which contains one or several tests: Auth, Hospital and Speciality.
+
+### Running the integration Tests 
+
+Integration tests checks how different units or components of a system work together, ensuring that they function correctly when combined. 
+
+To create an run manually the unit tests, do the following: 
+1. Create a new java file inside the ``test/java/com/medhead/backend/web/dao`` folder.
+![img](https://zupimages.net/up/24/41/ijxx.png)
+2. Run all the tests using the **Maven test** command from the IDE or run the ``mvn test`` command.
+![img](https://zupimages.net/up/24/41/6z6t.png)
+3. You should see the results in the terminal
+![img](https://zupimages.net/up/24/41/sijm.png)
+
+There are currently 3 integration test controllers which contains one or several tests: Hospital and Speciality.
 
 ## Deployment
 

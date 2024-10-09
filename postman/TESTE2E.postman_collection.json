@@ -1,0 +1,483 @@
+{
+	"info": {
+		"_postman_id": "e61b7c0e-d7b6-4344-a0e2-da1417f4298e",
+		"name": "Test E2E - Hopitaux",
+		"description": "### Hospital Management API Testing\n\nThis POSTMAN collection is used to test the functionning of several endpoints, notably the hospital beds reservation system.\n\n**WARNING** : This collection uses the Production API ! Please don't send thousands of requests, as to not explode my Heroku bill :) Thank you !\n\nOr else, change the URL and use localhost.\n\n---\n\n#### API Endpoints Tested:\n\nHere's the list of endpoints tested with this collection:\n\n- **User Authentication**: Login endpoint, used to generate a JWT token.\n    \n- **Get Specialities**: Fetch a list of all hospitals specialities from the database.\n    \n- **Get Hospitals nearby** : Retrieve hospitals based on geographical coordinates and selected specialty.\n    \n- **Reserve an hospital's bed**: Reserve a bed at a specific hospital and check the reservation status.\n    \n- **Get Hospital by ID** : Get detailed information about the hospital we reserved a bed in.\n    \n\n#### Usage:\n\nPrerequisites:\n\n- To use this collection, make sure you use the correct environment: _Test E2E Environment_.\n    \n- On the collection, right click and click on _Run collection._",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37174505"
+	},
+	"item": [
+		{
+			"name": "Step 1 - Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"const token = jsonData.token;\r",
+							"\r",
+							"pm.environment.set(\"tokenTest\", token); // tokenTest is the name of the env variable for test\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"andrew\",\r\n    \"password\": \"andrew\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Auth/Login",
+					"protocol": "https",
+					"host": [
+						"medhead-backend-d3ff39b61df1",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"Auth",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 2 - Get specialities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if the request succeeded\r",
+							"pm.test(\"Request succeed: get specialities\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify that the array response is not empty\r",
+							"pm.test(\"The retrieved specialities list is not empty.\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\").that.is.not.empty;\r",
+							"});\r",
+							"\r",
+							"// Search for a speciality with speciality_group equal to \"Dermatology\" and save its ID in env\r",
+							"const jsonData = pm.response.json();\r",
+							"const dermatologySpeciality = jsonData.find(speciality => speciality.speciality === \"Dermatology\");\r",
+							"\r",
+							"if (dermatologySpeciality) {\r",
+							"    pm.environment.set(\"specialityIdTest\", dermatologySpeciality.speciality);\r",
+							"    console.log(\"Speciality id for Dermatology saved in environment: \" + dermatologySpeciality.speciality);\r",
+							"} else {\r",
+							"    console.log(\"No speciality found for Dermatology.\");\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{tokenTest}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Specialities",
+					"protocol": "https",
+					"host": [
+						"medhead-backend-d3ff39b61df1",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"Specialities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Step 3 - Get hospitals nearby",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if request succeed\r",
+							"pm.test(\"Request succeed: get hospitals nearby\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Response is an array\r",
+							"pm.test(\"Response is an array.\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"// Save ID of first hospital from results if array not empty\r",
+							"const jsonData = pm.response.json();\r",
+							"if (jsonData.length > 0) {\r",
+							"    const hospitalId = jsonData[0].id;\r",
+							"    pm.environment.set(\"hospitalIdTest\", hospitalId);\r",
+							"    console.log(\"Saved hospital ID : \" + hospitalId);\r",
+							"} else {\r",
+							"    console.log(\"There are no hospitals nearby using these parameters.\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{tokenTest}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Hospitals/nearby?latitude=48.8630915&longitude=2.31034709&specialityId={{specialityIdTest}}",
+					"protocol": "https",
+					"host": [
+						"medhead-backend-d3ff39b61df1",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"Hospitals",
+						"nearby"
+					],
+					"query": [
+						{
+							"key": "latitude",
+							"value": "48.8630915"
+						},
+						{
+							"key": "longitude",
+							"value": "2.31034709"
+						},
+						{
+							"key": "specialityId",
+							"value": "{{specialityIdTest}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Hospitals near Paris",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Hospitals/nearby?latitude=48.8630915&longitude=2.31034709&specialityId=Dermatology",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Hospitals",
+								"nearby"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "48.8630915"
+								},
+								{
+									"key": "longitude",
+									"value": "2.31034709"
+								},
+								{
+									"key": "specialityId",
+									"value": "Dermatology"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Hospitals near Ermont",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/Hospitals/nearby?latitude=49.00189015143799&longitude=2.2706133079947852&specialityId=cardiology",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Hospitals",
+								"nearby"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "49.00189015143799"
+								},
+								{
+									"key": "longitude",
+									"value": "2.2706133079947852"
+								},
+								{
+									"key": "specialityId",
+									"value": "cardiology"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Step 4 - Reserve hospital bed Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if the request succeeded\r",
+							"pm.test(\"Request succeed: reserve hospital\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify that the response contains the expected structure\r",
+							"pm.test(\"Response should indicate reservation success\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.a(\"boolean\"); // Ensure it is a boolean\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check if hospitalIdTest is defined\", function () {\r",
+							"    pm.expect(pm.environment.get(\"hospitalIdTest\")).to.not.be.undefined;\r",
+							"});\r",
+							"\r",
+							"// Log the reservation details for debugging\r",
+							"const jsonData = pm.response.json();\r",
+							"console.log(\"Reservation details:\", jsonData);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{tokenTest}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer= eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFuZHJldyIsInN1YiI6ImFuZHJldyIsImlhdCI6MTcyNDkzMTcwMCwiZXhwIjoxNzI0OTY3NzAwfQ.Tw_xPvWCtZz9Y4hK4KF_9Jw1GzL_zIB10o8T9h5oqb8",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Hospitals/{{hospitalIdTest}}/reserve",
+					"protocol": "https",
+					"host": [
+						"medhead-backend-d3ff39b61df1",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"Hospitals",
+						"{{hospitalIdTest}}",
+						"reserve"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Example get one hospital",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9090/Hospitals/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"Hospitals",
+								"2"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Step 5 - Get hospital by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if the request succeeded\r",
+							"pm.test(\"Request succeed: get hospital details\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Verify that the response contains the expected structure\r",
+							"pm.test(\"Response should contain hospital details\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"id\");\r",
+							"    pm.expect(jsonData).to.have.property(\"name\");\r",
+							"    pm.expect(jsonData).to.have.property(\"available_beds\");\r",
+							"});\r",
+							"\r",
+							"// Verify that the available_beds is a number\r",
+							"pm.test(\"Available beds should be a number\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.available_beds).to.be.a(\"number\");\r",
+							"});\r",
+							"\r",
+							"// Ensure that the hospitalIdTest is set\r",
+							"pm.test(\"Check if hospitalIdTest is defined\", function () {\r",
+							"    pm.expect(pm.environment.get(\"hospitalIdTest\")).to.not.be.undefined;\r",
+							"});\r",
+							"\r",
+							"// Log the hospital details for debugging\r",
+							"const jsonData = pm.response.json();\r",
+							"console.log(\"Hospital details:\", jsonData);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{tokenTest}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer= eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFuZHJldyIsInN1YiI6ImFuZHJldyIsImlhdCI6MTcyNDkzMTcwMCwiZXhwIjoxNzI0OTY3NzAwfQ.Tw_xPvWCtZz9Y4hK4KF_9Jw1GzL_zIB10o8T9h5oqb8",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://medhead-backend-d3ff39b61df1.herokuapp.com/Hospitals/{{hospitalIdTest}}",
+					"protocol": "https",
+					"host": [
+						"medhead-backend-d3ff39b61df1",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"Hospitals",
+						"{{hospitalIdTest}}"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Example get one hospital",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9090/Hospitals/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9090",
+							"path": [
+								"Hospitals",
+								"2"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}
