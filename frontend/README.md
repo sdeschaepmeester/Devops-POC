@@ -46,9 +46,7 @@ Note that every request that requires a parameter or a body has an example attac
 
 ## Testing
 
-Follow these steps to test the project:
-TODO
-## Locally testing
+## Locally testing the E2E test
 
 We use Cypress in this project.
 There's an E2E test written for the frontend which is in the following file: ``frontend/cypress/e2e/spec.cy.ts``
@@ -66,6 +64,13 @@ Do the following commands to try the test locally:
 You should see the test running.
 
 ![img](https://zupimages.net/up/24/40/apfr.png)
+
+## Technologies
+
+The technologies used for the front-end are ReactJS and typescript.
+ReactJS is a modern framework used widely, with a large community.
+Typescript is used instead of javascript to further secure the code by forcing the developer to describes the variables' type.
+It reduces the risk of bugs during development that are common when using javascript.+
 
 ## Deployment
 

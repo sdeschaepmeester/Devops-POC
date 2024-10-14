@@ -2,45 +2,41 @@
 
 ## Introduction 
 
-Ce répertoire contient le code source pour le projet 10 Openclassroom de la formation d'Architecte Logiciel. 
+This project contains the source code for the 10th Openclassroom project of the "Architecte logiciel" formation.
 
-**Étudiante : Samantha Deschaepmeester**
+**Student: Samantha Deschaepmeester**
 
-Ce projet concerne l'entreprise Medhead qui a besoin de réaliser une preuve de concept (Proof of concept) pour son nouveau système d'invervention d'urgence.
+Medhead is the fictive company which needs to do a Proof of concept (POC) for its new emergency response system.
 
-## Objectifs 
+## Goals 
 
-La plateforme a les objectifs suivants : 
-- Permettre de regrouper et d'unifier les pratiques des divers acteurs du consortium.
-- Pallier les risques liés au traitement des recommandations de lits d'hôpitaux dans des situations d'intervention d'urgence.
-- La plateforme devra toujours être disponible.
+The new platform has the following goals:
+- Regroup and unit all the actions done by the consortium.
+- Avoid risks concerning the need of reserving hospitals bed in emergency cases.
+- Platform needs to be available at all time.
+
+The Proof of Concept shows the efficiency of the selected architecture.
+In this project, the frontend is published online and accessible (see Links section) and allows you to try the system.
+To try the system, you can enter an address and select a speciality to search for nearby hospitals.
+
+## links
+
+| Name | Description |
+| - | - |
+| **API's URL** | https://medhead-backend-d3ff39b61df1.herokuapp.com/ |
+| **Front-end's URL** | https://medhead-frontend-9f97491cebce.herokuapp.com/connexion |
 
 ## Emplacement des fichiers 
 
-Le projet est séparé en plusieurs sections : 
+The project is separated in several parts: 
 
-| Nom du dossier | Description |
+| Folder | Description |
 | - | - |
-| **xx** | xx |
+| **backend** | Contains the code for the back-end. |
+| **frontend** | Contains the code for the front-end. |
+| **jmeter** | Contains the performance test plan for JMeter. |
+| **postman** | Contains 3 Postman collections (dev, prod et test) and one postman environment to import. |
+| **.github** | Contains the two workflows used in the CI/CD for the back and the front. |
 
-## Fonctionnement
-
-Pour faire fonctionner le projet, suivez ces instructions :
-1. Cloner le projet.
-2. Installer les dépendances.
-3. xxx
-
-Backend : 
-1. Develop a functionnality on a new branch 
-2. Open a pull request and review the changes of the branch 
-3. Merge the request on main 
--> It will trigger Github Actions with the workflow file (backend.yml)
--> Then it will create a docker image on dockerhub 
--> Then do the following to deploy it on heroku
-
-heroku login
-heroku container:login
-docker pull deschaepmeesters/backend:latest
-docker tag deschaepmeesters/backend:latest registry.heroku.com/medhead-backend/web
-docker push registry.heroku.com/medhead-backend/web
-heroku container:release web --app medhead-backend
+The front-end and back-end all have a specific README.md which details the code, how to install the project, run the test, and the technologies used.
+Please refer to these files for more informations on the specific elements.
